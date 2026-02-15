@@ -1357,7 +1357,7 @@
     "VITALITE": "118 Vitalité",
     "INTELLIGENCE": "38 Intelligence",
     "FUITE": "2 Fuite",
-    "DO POU": "10 Dommages Poussée"
+    "RES CRIT": "3 Résistance Critiques"
   },
   {
     "Nom": "Cube",
@@ -1367,7 +1367,7 @@
     "VITALITE": "157 Vitalité",
     "INTELLIGENCE": "52 Intelligence",
     "FUITE": "4 Fuite",
-    "DO POU": "15 Dommages Poussée"
+    "RES CRIT": "5 Résistance Critiques"
   },
   {
     "Nom": "Cube",
@@ -1377,7 +1377,7 @@
     "VITALITE": "198 Vitalité",
     "INTELLIGENCE": "74 Intelligence",
     "FUITE": "7 Fuite",
-    "DO POU": "22 Dommages Poussée"
+    "RES CRIT": "9 Résistance Critiques"
   },
   {
     "Nom": "Cube",
@@ -1387,7 +1387,7 @@
     "VITALITE": "258 Vitalité",
     "INTELLIGENCE": "107 Intelligence",
     "FUITE": "12 Fuite",
-    "DO POU": "33 Dommages Poussée"
+    "RES CRIT": "15 Résistance Critiques"
   },
   {
     "Nom": "Cube",
@@ -1397,7 +1397,7 @@
     "VITALITE": "357 Vitalité",
     "INTELLIGENCE": "151 Intelligence",
     "FUITE": "20 Fuite",
-    "DO POU": "49 Dommages Poussée"
+    "RES CRIT": "23 Résistance Critiques"
   },
   {
     "Nom": "Cube",
@@ -1654,10 +1654,10 @@
     "Element": "Terre",
     "Rang": "Commun",
     "Numero": "4",
-    "VITALITE": "94 Vitalité",
+    "VITALITE": "97 Vitalité",
     "FORCE": "47 Force",
-    "DO TERRE": "6 Dommages Terre",
-    "RES CRIT": "6 Résistance Critiques"
+    "INVOCATION": "1 Invocation",
+    "DO TERRE": "6 Dommages Terre"
   },
   {
     "Nom": "Cube",
@@ -1666,8 +1666,8 @@
     "Numero": "4",
     "VITALITE": "126 Vitalité",
     "FORCE": "67 Force",
-    "DO TERRE": "9 Dommages Terre",
-    "RES CRIT": "9 Résistance Critiques"
+    "INVOCATION": "1 Invocation",
+    "DO TERRE": "9 Dommages Terre"
   },
   {
     "Nom": "Cube",
@@ -1676,37 +1676,37 @@
     "Numero": "4",
     "VITALITE": "165 Vitalité",
     "FORCE": "87 Force",
-    "DO TERRE": "14 Dommages Terre",
-    "RES CRIT": "14 Résistance Critiques"
+    "INVOCATION": "1 Invocation",
+    "DO TERRE": "14 Dommages Terre"
   },
   {
     "Nom": "Cube",
     "Element": "Terre",
     "Rang": "Mythique",
     "Numero": "4",
-    "VITALITE": "224 Vitalité",
+    "VITALITE": "204 Vitalité",
     "FORCE": "112 Force",
-    "DO TERRE": "22 Dommages Terre",
-    "RES CRIT": "22 Résistance Critiques"
+    "INVOCATION": "1 Invocation",
+    "DO TERRE": "22 Dommages Terre"
   },
   {
     "Nom": "Cube",
     "Element": "Terre",
     "Rang": "Éxalté",
     "Numero": "4",
-    "VITALITE": "293 Vitalité",
+    "VITALITE": "253 Vitalité",
     "FORCE": "154 Force",
-    "DO TERRE": "35 Dommages Terre",
-    "RES CRIT": "34 Résistance Critiques"
+    "INVOCATION": "1 Invocation",
+    "DO TERRE": "35 Dommages Terre"
   },
   {
     "Nom": "Cube",
     "Element": "Terre",
     "Rang": "Commun",
     "Numero": "5",
-    "SAGESSE": "48 Sagesse",
-    "FUITE": "6 Fuite",
+    "FUITE": "8 Fuite",
     "DO TERRE": "6 Dommages Terre",
+    "DO CRIT": "8 Dommages Critiques",
     "DO POU": "4 Dommages Poussée"
   },
   {
@@ -1714,9 +1714,9 @@
     "Element": "Terre",
     "Rang": "Rare",
     "Numero": "5",
-    "SAGESSE": "67 Sagesse",
-    "FUITE": "9 Fuite",
+    "FUITE": "12 Fuite",
     "DO TERRE": "9 Dommages Terre",
+    "DO CRIT": "14 Dommages Critiques",
     "DO POU": "7 Dommages Poussée"
   },
   {
@@ -1724,9 +1724,9 @@
     "Element": "Terre",
     "Rang": "Épique",
     "Numero": "5",
-    "SAGESSE": "92 Sagesse",
-    "FUITE": "14 Fuite",
+    "FUITE": "18 Fuite",
     "DO TERRE": "13 Dommages Terre",
+    "DO CRIT": "28 Dommages Critiques",
     "DO POU": "12 Dommages Poussée"
   },
   {
@@ -1734,9 +1734,9 @@
     "Element": "Terre",
     "Rang": "Mythique",
     "Numero": "5",
-    "SAGESSE": "119 Sagesse",
-    "FUITE": "21 Fuite",
+    "FUITE": "33 Fuite",
     "DO TERRE": "21 Dommages Terre",
+    "DO CRIT": "45 Dommages Critiques",
     "DO POU": "18 Dommages Poussée"
   },
   {
@@ -1744,9 +1744,9 @@
     "Element": "Terre",
     "Rang": "Éxalté",
     "Numero": "5",
-    "SAGESSE": "163 Sagesse",
-    "FUITE": "30 Fuite",
+    "FUITE": "48 Fuite",
     "DO TERRE": "33 Dommages Terre",
+    "DO CRIT": "75 Dommages Critiques",
     "DO POU": "28 Dommages Poussée"
   },
   {
@@ -1765,7 +1765,7 @@
     "Rang": "Rare",
     "Numero": "6",
     "VITALITE": "91 Vitalité",
-    "FORCE": "25 Force",
+    "FORCE": "50 Force",
     "INVOCATION": "1 Invocation",
     "RES POU": "18 Résistance Poussée"
   },
@@ -1855,8 +1855,8 @@
     "Rang": "Commun",
     "Numero": "8",
     "FORCE": "51 Force",
+    "INVOCATION": "1 Invocation",
     "DO TERRE": "8 Dommages Terre",
-    "RES CRIT": "3 Résistance Critiques",
     "RES POU": "6 Résistance Poussée"
   },
   {
@@ -1865,8 +1865,8 @@
     "Rang": "Rare",
     "Numero": "8",
     "FORCE": "68 Force",
+    "INVOCATION": "1 Invocation",
     "DO TERRE": "12 Dommages Terre",
-    "RES CRIT": "5 Résistance Critiques",
     "RES POU": "9 Résistance Poussée"
   },
   {
@@ -1875,8 +1875,8 @@
     "Rang": "Épique",
     "Numero": "8",
     "FORCE": "95 Force",
+    "INVOCATION": "2 Invocation",
     "DO TERRE": "17 Dommages Terre",
-    "RES CRIT": "9 Résistance Critiques",
     "RES POU": "14 Résistance Poussée"
   },
   {
@@ -1885,8 +1885,8 @@
     "Rang": "Mythique",
     "Numero": "8",
     "FORCE": "131 Force",
-    "DO TERRE": "26 Dommages Terre",
-    "RES CRIT": "14 Résistance Critiques",
+    "INVOCATION": "2 Invocation",
+    "DO TERRE": "29 Dommages Terre",
     "RES POU": "21 Résistance Poussée"
   },
   {
@@ -1895,8 +1895,8 @@
     "Rang": "Éxalté",
     "Numero": "8",
     "FORCE": "176 Force",
-    "DO TERRE": "39 Dommages Terre",
-    "RES CRIT": "23 Résistance Critiques",
+    "INVOCATION": "2 Invocation",
+    "DO TERRE": "47 Dommages Terre",
     "RES POU": "33 Résistance Poussée"
   },
   {
@@ -1904,9 +1904,9 @@
     "Element": "Terre",
     "Rang": "Commun",
     "Numero": "9",
-    "VITALITE": "64 Vitalité",
+    "VITALITE": "51 Vitalité",
     "FORCE": "34 Force",
-    "DO POU": "3 Dommages Poussée",
+    "DO POU": "4 Dommages Poussée",
     "RES CRIT": "12 Résistance Critiques"
   },
   {
@@ -1914,9 +1914,9 @@
     "Element": "Terre",
     "Rang": "Rare",
     "Numero": "9",
-    "VITALITE": "82 Vitalité",
+    "VITALITE": "66 Vitalité",
     "FORCE": "44 Force",
-    "DO POU": "5 Dommages Poussée",
+    "DO POU": "7 Dommages Poussée",
     "RES CRIT": "18 Résistance Critiques"
   },
   {
@@ -1924,9 +1924,9 @@
     "Element": "Terre",
     "Rang": "Épique",
     "Numero": "9",
-    "VITALITE": "105 Vitalité",
+    "VITALITE": "86 Vitalité",
     "FORCE": "62 Force",
-    "DO POU": "9 Dommages Poussée",
+    "DO POU": "12 Dommages Poussée",
     "RES CRIT": "26 Résistance Critiques"
   },
   {
@@ -1934,9 +1934,9 @@
     "Element": "Terre",
     "Rang": "Mythique",
     "Numero": "9",
-    "VITALITE": "150 Vitalité",
+    "VITALITE": "113 Vitalité",
     "FORCE": "82 Force",
-    "DO POU": "15 Dommages Poussée",
+    "DO POU": "18 Dommages Poussée",
     "RES CRIT": "38 Résistance Critiques"
   },
   {
@@ -1944,9 +1944,9 @@
     "Element": "Terre",
     "Rang": "Éxalté",
     "Numero": "9",
-    "VITALITE": "199 Vitalité",
+    "VITALITE": "149 Vitalité",
     "FORCE": "107 Force",
-    "DO POU": "23 Dommages Poussée",
+    "DO POU": "32 Dommages Poussée",
     "RES CRIT": "52 Résistance Critiques"
   },
   {
@@ -2005,7 +2005,7 @@
     "Rang": "Commun",
     "Numero": "11",
     "PO": "1 PO",
-    "VITALITE": "116 Vitalité",
+    "VITALITE": "86 Vitalité",
     "DO TERRE": "8 Dommages Terre",
     "DO POU": "3 Dommages Poussée"
   },
@@ -2014,8 +2014,8 @@
     "Element": "Terre",
     "Rang": "Rare",
     "Numero": "11",
-    "PO": "1 PO",
-    "VITALITE": "151 Vitalité",
+    "PO": "2 PO",
+    "VITALITE": "121 Vitalité",
     "DO TERRE": "12 Dommages Terre",
     "DO POU": "5 Dommages Poussée"
   },
@@ -2024,8 +2024,8 @@
     "Element": "Terre",
     "Rang": "Épique",
     "Numero": "11",
-    "PO": "1 PO",
-    "VITALITE": "204 Vitalité",
+    "PO": "2 PO",
+    "VITALITE": "154 Vitalité",
     "DO TERRE": "19 Dommages Terre",
     "DO POU": "9 Dommages Poussée"
   },
@@ -2034,8 +2034,8 @@
     "Element": "Terre",
     "Rang": "Mythique",
     "Numero": "11",
-    "PO": "1 PO",
-    "VITALITE": "270 Vitalité",
+    "PO": "2 PO",
+    "VITALITE": "208 Vitalité",
     "DO TERRE": "27 Dommages Terre",
     "DO POU": "15 Dommages Poussée"
   },
@@ -2044,8 +2044,8 @@
     "Element": "Terre",
     "Rang": "Éxalté",
     "Numero": "11",
-    "PO": "1 PO",
-    "VITALITE": "369 Vitalité",
+    "PO": "2 PO",
+    "VITALITE": "287 Vitalité",
     "DO TERRE": "38 Dommages Terre",
     "DO POU": "23 Dommages Poussée"
   },
@@ -2057,7 +2057,7 @@
     "PO": "1 PO",
     "VITALITE": "119 Vitalité",
     "DO TERRE": "4 Dommages Terre",
-    "RES CRIT": "3 Résistance Critiques"
+    "FUITE": "8 Fuite"
   },
   {
     "Nom": "Cube",
@@ -2067,7 +2067,7 @@
     "PO": "1 PO",
     "VITALITE": "168 Vitalité",
     "DO TERRE": "6 Dommages Terre",
-    "RES CRIT": "5 Résistance Critiques"
+    "FUITE": "11 Fuite"
   },
   {
     "Nom": "Cube",
@@ -2077,7 +2077,7 @@
     "PO": "2 PO",
     "VITALITE": "225 Vitalité",
     "DO TERRE": "10 Dommages Terre",
-    "RES CRIT": "9 Résistance Critiques"
+    "FUITE": "17 Fuite"
   },
   {
     "Nom": "Cube",
@@ -2087,7 +2087,7 @@
     "PO": "2 PO",
     "VITALITE": "284 Vitalité",
     "DO TERRE": "17 Dommages Terre",
-    "RES CRIT": "15 Résistance Critiques"
+    "FUITE": "25 Fuite"
   },
   {
     "Nom": "Cube",
@@ -2097,7 +2097,7 @@
     "PO": "2 PO",
     "VITALITE": "396 Vitalité",
     "DO TERRE": "26 Dommages Terre",
-    "RES CRIT": "24 Résistance Critiques"
+    "FUITE": "38 Fuite"
   },
   {
     "Nom": "Cube",
