@@ -3148,7 +3148,7 @@
     "Rang": "Mythique",
     "Numero": "3",
     "FORCE": "115 Force",
-    "PUISSANCE": "106 Puissance",
+    "PUISSANCE": "103 Puissance",
     "DOMMAGES": "17 Dommages",
     "DO CRIT": "17 Dommages Critiques",
     "DO POU": "24 Dommages Poussée"
@@ -4062,7 +4062,7 @@
     "PA": "3 PA",
     "% RES TERRE": "18 % Résistance Terre",
     "RES EAU": "36 Résistance Eau",
-    "INITIATIVE": "166 Initiative"
+    "INITIATIVE": "196 Initiative"
   },
   {
     "Nom": "Cube",
@@ -4109,20 +4109,20 @@
     "Element": "Lumière",
     "Rang": "Mythique",
     "Numero": "6",
-    "PA": "2 PA",
-    "VITALITE": "153 Vitalité",
+    "PA": "3 PA",
+    "VITALITE": "223 Vitalité",
     "% COUP CRITIQUE": "13 % Critique",
-    "% RES FEU": "19 % Résistance Feu"
+    "% RES FEU": "15 % Résistance Feu"
   },
   {
     "Nom": "Cube",
     "Element": "Lumière",
     "Rang": "Éxalté",
     "Numero": "6",
-    "PA": "2 PA",
-    "VITALITE": "197 Vitalité",
-    "% COUP CRITIQUE": "22 % Critique",
-    "% RES FEU": "28 % Résistance Feu"
+    "PA": "3 PA",
+    "VITALITE": "322 Vitalité",
+    "% COUP CRITIQUE": "19 % Critique",
+    "% RES FEU": "23 % Résistance Feu"
   },
   {
     "Nom": "Cube",
