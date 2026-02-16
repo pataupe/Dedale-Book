@@ -2354,8 +2354,8 @@
     "Element": "Eau",
     "Rang": "Commun",
     "Numero": "3",
+    "VITALITE": "87 Vitalité",
     "SAGESSE": "60 Sagesse",
-    "FUITE": "4 Fuite",
     "DO CRIT": "3 Dommages Critiques",
     "DO POU": "4 Dommages Poussée"
   },
@@ -2364,8 +2364,8 @@
     "Element": "Eau",
     "Rang": "Rare",
     "Numero": "3",
+    "VITALITE": "117 Vitalité",
     "SAGESSE": "85 Sagesse",
-    "FUITE": "6 Fuite",
     "DO CRIT": "5 Dommages Critiques",
     "DO POU": "6 Dommages Poussée"
   },
@@ -2374,8 +2374,8 @@
     "Element": "Eau",
     "Rang": "Épique",
     "Numero": "3",
+    "VITALITE": "161 Vitalité",
     "SAGESSE": "114 Sagesse",
-    "FUITE": "10 Fuite",
     "DO CRIT": "8 Dommages Critiques",
     "DO POU": "10 Dommages Poussée"
   },
@@ -2384,8 +2384,8 @@
     "Element": "Eau",
     "Rang": "Mythique",
     "Numero": "3",
+    "VITALITE": "225 Vitalité",
     "SAGESSE": "150 Sagesse",
-    "FUITE": "16 Fuite",
     "DO CRIT": "14 Dommages Critiques",
     "DO POU": "16 Dommages Poussée"
   },
@@ -2394,8 +2394,8 @@
     "Element": "Eau",
     "Rang": "Éxalté",
     "Numero": "3",
-    "SAGESSE": "214 Sagesse",
-    "FUITE": "25 Fuite",
+    "VITALITE": "308 Vitalité",
+    "SAGESSE": "197 Sagesse",
     "DO CRIT": "22 Dommages Critiques",
     "DO POU": "26 Dommages Poussée"
   },
@@ -2404,9 +2404,9 @@
     "Element": "Eau",
     "Rang": "Commun",
     "Numero": "4",
-    "PO": "1 PO",
-    "VITALITE": "63 Vitalité",
+    "VITALITE": "82 Vitalité",
     "CHANCE": "63 Chance",
+    "INVOCATION": "2 Invocation",
     "DO CRIT": "2 Dommages Critiques"
   },
   {
@@ -2414,9 +2414,9 @@
     "Element": "Eau",
     "Rang": "Rare",
     "Numero": "4",
-    "PO": "1 PO",
-    "VITALITE": "86 Vitalité",
+    "VITALITE": "111 Vitalité",
     "CHANCE": "82 Chance",
+    "INVOCATION": "2 Invocation",
     "DO CRIT": "4 Dommages Critiques"
   },
   {
@@ -2424,9 +2424,9 @@
     "Element": "Eau",
     "Rang": "Épique",
     "Numero": "4",
-    "PO": "1 PO",
-    "VITALITE": "117 Vitalité",
+    "VITALITE": "152 Vitalité",
     "CHANCE": "114 Chance",
+    "INVOCATION": "2 Invocation",
     "DO CRIT": "7 Dommages Critiques"
   },
   {
@@ -2434,9 +2434,9 @@
     "Element": "Eau",
     "Rang": "Mythique",
     "Numero": "4",
-    "PO": "1 PO",
-    "VITALITE": "156 Vitalité",
+    "VITALITE": "195 Vitalité",
     "CHANCE": "155 Chance",
+    "INVOCATION": "3 Invocation",
     "DO CRIT": "12 Dommages Critiques"
   },
   {
@@ -2444,9 +2444,9 @@
     "Element": "Eau",
     "Rang": "Éxalté",
     "Numero": "4",
-    "PO": "1 PO",
-    "VITALITE": "219 Vitalité",
+    "VITALITE": "265 Vitalité",
     "CHANCE": "218 Chance",
+    "INVOCATION": "3 Invocation",
     "DO CRIT": "21 Dommages Critiques"
   },
   {
@@ -2455,9 +2455,9 @@
     "Rang": "Commun",
     "Numero": "5",
     "CHANCE": "37 Chance",
-    "SAGESSE": "20 Sagesse",
-    "DO EAU": "4 Dommages Eau",
-    "DO CRIT": "5 Dommages Critiques"
+    "PO": "1 PO",
+    "INVOCATION": "1 Invocation",
+    "DO EAU": "4 Dommages Eau"
   },
   {
     "Nom": "Cube",
@@ -2465,9 +2465,9 @@
     "Rang": "Rare",
     "Numero": "5",
     "CHANCE": "48 Chance",
-    "SAGESSE": "27 Sagesse",
-    "DO EAU": "6 Dommages Eau",
-    "DO CRIT": "8 Dommages Critiques"
+    "PO": "1 PO",
+    "INVOCATION": "2 Invocation",
+    "DO EAU": "6 Dommages Eau"
   },
   {
     "Nom": "Cube",
@@ -2475,9 +2475,9 @@
     "Rang": "Épique",
     "Numero": "5",
     "CHANCE": "69 Chance",
-    "SAGESSE": "38 Sagesse",
-    "DO EAU": "10 Dommages Eau",
-    "DO CRIT": "13 Dommages Critiques"
+    "PO": "1 PO",
+    "INVOCATION": "2 Invocation",
+    "DO EAU": "10 Dommages Eau"
   },
   {
     "Nom": "Cube",
@@ -2485,9 +2485,9 @@
     "Rang": "Mythique",
     "Numero": "5",
     "CHANCE": "95 Chance",
-    "SAGESSE": "55 Sagesse",
-    "DO EAU": "17 Dommages Eau",
-    "DO CRIT": "20 Dommages Critiques"
+    "PO": "1 PO",
+    "INVOCATION": "2 Invocation",
+    "DO EAU": "17 Dommages Eau"
   },
   {
     "Nom": "Cube",
@@ -2495,9 +2495,9 @@
     "Rang": "Éxalté",
     "Numero": "5",
     "CHANCE": "135 Chance",
-    "SAGESSE": "73 Sagesse",
-    "DO EAU": "28 Dommages Eau",
-    "DO CRIT": "31 Dommages Critiques"
+    "PO": "1 PO",
+    "INVOCATION": "2 Invocation",
+    "DO EAU": "28 Dommages Eau"
   },
   {
     "Nom": "Cube",
@@ -2654,50 +2654,50 @@
     "Element": "Eau",
     "Rang": "Commun",
     "Numero": "9",
-    "VITALITE": "59 Vitalité",
-    "CHANCE": "57 Chance",
+    "VITALITE": "102 Vitalité",
     "DO EAU": "4 Dommages Eau",
-    "DO POU": "5 Dommages Poussée"
+    "DO POU": "5 Dommages Poussée",
+    "RES POU": "11 Résistance Poussée"
   },
   {
     "Nom": "Cube",
     "Element": "Eau",
     "Rang": "Rare",
     "Numero": "9",
-    "VITALITE": "81 Vitalité",
-    "CHANCE": "72 Chance",
+    "VITALITE": "134 Vitalité",
     "DO EAU": "6 Dommages Eau",
-    "DO POU": "8 Dommages Poussée"
+    "DO POU": "8 Dommages Poussée",
+    "RES POU": "16 Résistance Poussée"
   },
   {
     "Nom": "Cube",
     "Element": "Eau",
     "Rang": "Épique",
     "Numero": "9",
-    "VITALITE": "109 Vitalité",
-    "CHANCE": "97 Chance",
+    "VITALITE": "182 Vitalité",
     "DO EAU": "10 Dommages Eau",
-    "DO POU": "12 Dommages Poussée"
+    "DO POU": "12 Dommages Poussée",
+    "RES POU": "23 Résistance Poussée"
   },
   {
     "Nom": "Cube",
     "Element": "Eau",
     "Rang": "Mythique",
     "Numero": "9",
-    "VITALITE": "148 Vitalité",
-    "CHANCE": "130 Chance",
+    "VITALITE": "258 Vitalité",
     "DO EAU": "16 Dommages Eau",
-    "DO POU": "19 Dommages Poussée"
+    "DO POU": "19 Dommages Poussée",
+    "RES POU": "33 Résistance Poussée"
   },
   {
     "Nom": "Cube",
     "Element": "Eau",
     "Rang": "Éxalté",
     "Numero": "9",
-    "VITALITE": "190 Vitalité",
-    "CHANCE": "183 Chance",
+    "VITALITE": "365 Vitalité",
     "DO EAU": "24 Dommages Eau",
-    "DO POU": "29 Dommages Poussée"
+    "DO POU": "29 Dommages Poussée",
+    "RES POU": "48 Résistance Poussée"
   },
   {
     "Nom": "Cube",
@@ -2706,7 +2706,7 @@
     "Numero": "10",
     "PO": "1 PO",
     "VITALITE": "81 Vitalité",
-    "CHANCE": "40 Chance",
+    "CHANCE": "41 Chance",
     "DO EAU": "6 Dommages Eau"
   },
   {
@@ -2904,9 +2904,9 @@
     "Element": "Eau",
     "Rang": "Commun",
     "Numero": "14",
-    "CHANCE": "37 Chance",
-    "FUITE": "9 Fuite",
-    "DO EAU": "4 Dommages Eau",
+    "CHANCE": "48 Chance",
+    "FUITE": "8 Fuite",
+    "RES CRIT": "8 Résistance Critiques",
     "DO POU": "5 Dommages Poussée"
   },
   {
@@ -2914,9 +2914,9 @@
     "Element": "Eau",
     "Rang": "Rare",
     "Numero": "14",
-    "CHANCE": "48 Chance",
-    "FUITE": "12 Fuite",
-    "DO EAU": "6 Dommages Eau",
+    "CHANCE": "67 Chance",
+    "FUITE": "11 Fuite",
+    "RES CRIT": "15 Résistance Critiques",
     "DO POU": "7 Dommages Poussée"
   },
   {
@@ -2924,9 +2924,9 @@
     "Element": "Eau",
     "Rang": "Épique",
     "Numero": "14",
-    "CHANCE": "65 Chance",
-    "FUITE": "18 Fuite",
-    "DO EAU": "10 Dommages Eau",
+    "CHANCE": "94 Chance",
+    "FUITE": "16 Fuite",
+    "RES CRIT": "23 Résistance Critiques",
     "DO POU": "11 Dommages Poussée"
   },
   {
@@ -2934,9 +2934,9 @@
     "Element": "Eau",
     "Rang": "Mythique",
     "Numero": "14",
-    "CHANCE": "85 Chance",
-    "FUITE": "26 Fuite",
-    "DO EAU": "16 Dommages Eau",
+    "CHANCE": "133 Chance",
+    "FUITE": "23 Fuite",
+    "RES CRIT": "34 Résistance Critiques",
     "DO POU": "18 Dommages Poussée"
   },
   {
@@ -2944,9 +2944,9 @@
     "Element": "Eau",
     "Rang": "Éxalté",
     "Numero": "14",
-    "CHANCE": "113 Chance",
-    "FUITE": "39 Fuite",
-    "DO EAU": "26 Dommages Eau",
+    "CHANCE": "190 Chance",
+    "FUITE": "32 Fuite",
+    "RES CRIT": "48 Résistance Critiques",
     "DO POU": "27 Dommages Poussée"
   },
   {
