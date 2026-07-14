@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm -f \"C:\\\\Users\\\\natha\\\\.claude\\\\projects\\\\C--Users-natha-dev-Dedalofus\\\\memory\\\\project_data_discrepancies.md\")",
+      "Bash(mysql --version)"
+    ]
+  }
+}

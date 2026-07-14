@@ -1,0 +1,117 @@
+Nom,Rang,Effet
+Breloque du Rixeur Instable,Novice,Augmente de 15% les dommages occasionnées en mélée mais téléporte aléatoirement au début de chaque tour.
+Breloque du Rixeur Instable,Expert,Augmente de 30% les dommages occasionnées en mélée  mais téléporte aléatoirement au début de chaque tour.
+Breloque du Rixeur Instable,Maître α,"Augmente de 30% les dommages occasionnées en mélée  mais téléporte aléatoirement au début de chaque tour, un tour sur deux."
+Breloque du Rixeur Instable,Maître ẞ,Augmente de 30% les dommages occasionnées en mélée mais téléporte aléatoirement dans un rayon de 6 cases au début de chaque tour.
+Breloque du Sprinteur,Novice,Octroie 1 PM supplémentaires 1 tour sur 2 et retire 1 PM le tour suivant.
+Breloque du Sprinteur,Expert,Octroie 2 PM supplémentaires 1 tour sur 2 et retire 1 PM le tour suivant.
+Breloque du Sprinteur,Maître α,Octroie 3 PM supplémentaires 1 tour sur 2 et retire 1 PM le tour suivant.
+Breloque du Sprinteur,Maître ẞ,Octroie 2 PM supplémentaires 1 tour sur 2. et retire 1 PM le tour suivant
+Breloque du Combattant belliqueux,Novice,Attire le porteur d'1 case vers l'adversaire le plus proche au début de chaque tour.
+Breloque du Combattant belliqueux,Expert,Attire le porteur de 2 cases vers l'adversaire le plus proche au début de chaque tour.
+Breloque du Combattant belliqueux,Maître α,Attire le porteur de 3 cases vers l'adversaire le plus proche au début de chaque tour.
+Breloque du Combattant belliqueux,Maître ẞ,Attire l'adversaire le plus proche de 2 cases vers le porteur au début de chaque tour.
+Breloque de Rage mortelle,Novice,Augmente les dommages du porteur de 10% par tour. Tue le porteur au tour 5.
+Breloque de Rage mortelle,Expert,Augmente les dommages du porteur de 10% par tour. Tue le porteur au tour 6.
+Breloque de Rage mortelle,Maître α,Augmente les dommages du porteur de 15% par tour. Tue le porteur au tour 7.
+Breloque de Rage mortelle,Maître ẞ,Augmente les dommages du porteur de 10% par tour. Tue le porteur au tour 10.
+Breloque du Bouclier d'urgence,Novice,"Lorsque le porteur passe sous les 20% de PDV, applique 450 points de bouclier. Une seule fois par combat."
+Breloque du Bouclier d'urgence,Expert,"Lorsque le porteur passe sous les 30% de PDV, applique 450 points de bouclier. Une seule fois par combat."
+Breloque du Bouclier d'urgence,Maître α,"Lorsque le porteur passe sous les 30% de PDV, applique 1200 points de bouclier. Une seule fois par combat."
+Breloque du Bouclier d'urgence,Maître ẞ,"Lorsque le porteur passe sous les 50% de PDV, applique 600 points de bouclier. Une seule fois par combat."
+Breloque de Sursaut de puissance,Novice,"Lorsque le porteur passe sous les 20% de PDV, il gagne 50% de dommages pour le prochain tour. Une seule fois par combat."
+Breloque de Sursaut de puissance,Expert,"Lorsque le porteur passe sous les 30% de PDV, il gagne 100% de dommages pour le prochain tour. Une seule fois par combat."
+Breloque de Sursaut de puissance,Maître α,"Lorsque le porteur passe sous les 30% de PDV, il gagne 100% de dommages pour les deux prochains tours. Une seule fois par combat."
+Breloque de Sursaut de puissance,Maître ẞ,"Lorsque le porteur passe sous les 30% de PDV, il gagne 150% de dommages pour le prochain tour. Une seule fois par combat."
+Breloque du Martyr,Novice,"Lorsque le porteur meurt, il occasionne des dommages équivalent à 20% de sa vie manquantes dans le meilleur en zone (cercle de 2 cases) aux ennemis."
+Breloque du Martyr,Expert,"Lorsque le porteur meurt, il occasionne des dommages équivalent à 25% de sa vie manquantes dans le meilleur en zone (cercle de 2 cases) aux ennemis."
+Breloque du Martyr,Maître α,"Lorsque le porteur meurt, il occasionne des dommages équivalent à 50% de sa vie manquantes dans le meilleur en zone (cercle de 2 cases) aux ennemis."
+Breloque du Martyr,Maître ẞ,"Lorsque le porteur meurt, il occasionne des dommages équivalent à 30% de sa vie manquantes dans le meilleur en zone (cercle de 4 cases) aux ennemis."
+Breloque de Dernier Souffle,Novice,"Lorsque le porteur meurt, soigne ses alliés en zone (cercle de 2 cases) de 10% de leurs PDV."
+Breloque de Dernier Souffle,Expert,"Lorsque le porteur meurt, soigne ses alliés en zone (cercle de 2 cases) de 15% de leurs PDV."
+Breloque de Dernier Souffle,Maître α,"Lorsque le porteur meurt, soigne ses alliés en zone (cercle de 2 cases) de 30% de leurs PDV."
+Breloque de Dernier Souffle,Maître ẞ,"Lorsque le porteur meurt, soigne ses alliés en zone (cercle de 4 cases) de 20% de leurs PDV."
+Breloque d'Entrée fracassante,Novice,Donne 2 PA pour le premier tour.
+Breloque d'Entrée fracassante,Expert,Donne 2 PA pour les deux premiers tours.
+Breloque d'Entrée fracassante,Maître α,Donne 3 PA pour les deux premiers tours.
+Breloque d'Entrée fracassante,Maître ẞ,Donne 2 PA pour les trois premiers tours.
+Breloque de Capacité croissante,Novice,Le porteur gagne 1 PA (infini) tous les 3 tours. Cumul maximum : 2.
+Breloque de Capacité croissante,Expert,Le porteur gagne 1 PA (infini) tous les 3 tours. Cumul maximum : 3.
+Breloque de Capacité croissante,Maître α,Le porteur gagne 1 PA (infini) tous les 2 tours. Cumul maximum : 3.
+Breloque de Capacité croissante,Maître ẞ,Le porteur gagne 1 PA (infini) tous les 3 tours. Cumul maximum : 5.
+Breloque du Paladin d'avant-garde,Novice,Applique 100 points de bouclier au début du combat.
+Breloque du Paladin d'avant-garde,Expert,Applique 200 points de bouclier au début du combat.
+Breloque du Paladin d'avant-garde,Maître α,Applique 200 points de bouclier au porteur et son allié au début du combat.
+Breloque du Paladin d'avant-garde,Maître ẞ,Applique 600 points de bouclier au début du combat.
+Breloque du Dernier repli,Novice,Applique 300 points de bouclier au début du combat si les PDV du porteur sont inférieurs à 20%.
+Breloque du Dernier repli,Expert,Applique 500 points de bouclier au début du combat si les PDV du porteur sont inférieurs à 30%.
+Breloque du Dernier repli,Maître α,Applique 1000 points de bouclier au début du combat si les PDV du porteur sont inférieurs à 30%.
+Breloque du Dernier repli,Maître ẞ,Applique 500 points de bouclier au début du combat si les PDV du porteur sont inférieurs à 50%.
+Breloque du Visionnaire d'avant-garde,Novice,Applique un bonus de 2 PO pour 1 tour au début du combat.
+Breloque du Visionnaire d'avant-garde,Expert,Applique un bonus de 3 PO pour 2 tours au début du combat.
+Breloque du Visionnaire d'avant-garde,Maître α,Applique un bonus de 5 PO pour 2 tours au début du combat.
+Breloque du Visionnaire d'avant-garde,Maître ẞ,Applique un bonus de 3 PO pour 3 tours au début du combat.
+Breloque de Vision croissante,Novice,Le porteur gagne 1 PO (infini) tous les 3 tours. Cumul maximum : 3.
+Breloque de Vision croissante,Expert,Le porteur gagne 1 PO (infini) tous les 2 tours. Cumul maximum : 3.
+Breloque de Vision croissante,Maître α,Le porteur gagne 1 PO (infini) tous les 2 tours. Cumul maximum : 5.
+Breloque de Vision croissante,Maître ẞ,Le porteur gagne 1 PO (infini) chaque tour. Cumul maximum : 3.
+Breloque du Stratège d'avant-garde,Novice,Applique un bonus de 20 Coups Critiques pour 2 tours au début du combat.
+Breloque du Stratège d'avant-garde,Expert,Applique un bonus de 30 Coups Critiques pour 2 tours au début du combat.
+Breloque du Stratège d'avant-garde,Maître α,Applique un bonus de 20 Coups Critiques pour 3 tours au début du combat.
+Breloque du Stratège d'avant-garde,Maître ẞ,Applique un bonus de 40 Coups Critiques pour 2 tours au début du combat.
+Breloque de Tension croissante,Novice,Le porteur gagne 5 Coups Critiques (infini) tous les 3 tours. Cumul maximum : 3.
+Breloque de Tension croissante,Expert,Le porteur gagne 5 Coups Critiques (infini) tous les 2 tours. Cumul maximum : 3.
+Breloque de Tension croissante,Maître α,Le porteur gagne 5 Coups Critiques (infini) tous les 2 tours. Cumul maximum : 5.
+Breloque de Tension croissante,Maître ẞ,Le porteur gagne 5 Coups Critiques (infini) chaque tour. Cumul maximum : 3.
+Breloque du Clerc obscur,Novice,Effectue un soin d'une valeur de base de 3 sur le lanceur au début de chaque tour. Réduit en contrepartie ses  résistances Fixes de 3 (infini) au début de chaque tour. 
+Breloque du Clerc obscur,Expert,Effectue un soin d'une valeur de base de 5 sur le lanceur au début de chaque tour. Réduit en contrepartie ses  résistances Fixes de 3 (infini) au début de chaque tour. 
+Breloque du Clerc obscur,Maître α,Effectue un soin d'une valeur de base de 10 sur le lanceur et son allié au début de chaque tour. Réduit en contrepartie ses  résistances Fixes de 3 (infini) au début de chaque tour. 
+Breloque du Clerc obscur,Maître ẞ,Effectue un soin d'une valeur de base de 10 sur le lanceur au début de chaque tour. Réduit en contrepartie ses  résistances Fixes de 3 (infini) au début de chaque tour. 
+Breloque de l'Embourgeur embourbé,Novice,"Augmente le Retrait PA et PM du porteur de 10, mais réduit son Esquive PA et PM de 5 en contrepartie."
+Breloque de l'Embourgeur embourbé,Expert,"Augmente le Retrait PA et PM du porteur de 20, mais réduit son Esquive PA et PM de 10 en contrepartie."
+Breloque de l'Embourgeur embourbé,Maître α,Augmente le Retrait PA et PM du porteur de 30.
+Breloque de l'Embourgeur embourbé,Maître ẞ,"Augmente le Retrait PA et PM du porteur de 60, mais réduit son Esquive PA et PM de 60 en contrepartie."
+Breloque du Randonneur ballonné,Novice,Occasionne des dommages aux ennemis en croix autour du porteur dans son meilleur élément d'attaque à chaque qu'il attiré ou poussé. Dommage 6 à 8.
+Breloque du Randonneur ballonné,Expert,Occasionne des dommages aux ennemis en croix autour du porteur dans son meilleur élément d'attaque à chaque qu'il attiré ou poussé. Dommage 11 à 15.
+Breloque du Randonneur ballonné,Maître α,Applique un poison de 2 tours aux ennemis en croix autour du porteur dans son meilleur élément d'attaque à chaque qu'il attiré ou poussé. Dommage 21 à 25. Cumul maximum : 3.
+Breloque du Randonneur ballonné,Maître ẞ,Occasionne des dommages aux ennemis en croix autour du porteur dans son meilleur élément d'attaque à chaque qu'il attiré ou poussé. Dommage 21 à 130
+Breloque du Tireur d'élite,Novice,"Le porteur bénéficie d'une augmentation de ses dommages occasionnés à distance de 10%, mais ses dommages occasionnés en mêlée sont réduits de 20%."
+Breloque du Tireur d'élite,Expert,"Le porteur bénéficie d'une augmentation de ses dommages occasionnés à distance de 15%, mais ses dommages occasionnés en mêlée sont réduits de 15%."
+Breloque du Tireur d'élite,Maître α,"Le porteur bénéficie d'une augmentation de ses dommages occasionnés à distance de 20%, mais ses dommages occasionnés en mêlée sont réduits de 10%."
+Breloque du Tireur d'élite,Maître ẞ,"Le porteur bénéficie d'une augmentation de ses dommages occasionnés à distance de 30%, mais ses dommages occasionnés en mêlée sont réduits de 30%."
+Breloque d'empathie croissante,Novice,Le porteur gagne 10 Soins (infini) tous les 3 tours. Cumul maximum : 3.
+Breloque d'empathie croissante,Expert,Le porteur gagne 10 Soins (infini) tous les 2 tours. Cumul maximum : 3.
+Breloque d'empathie croissante,Maître α,Le porteur gagne 10 Soins (infini) tous les 2 tours. Cumul maximum : 5.
+Breloque d'empathie croissante,Maître ẞ,Le porteur gagne 10 Soins (infini) chaque tour. Cumul maximum : 3.
+Breloque du Randonneur tenace,Novice,"Le porteur gagne 1 PM lorsqu'il est poussé, attiré ou téléporté. Une fois par tour maximum."
+Breloque du Randonneur tenace,Expert,"Le porteur gagne 1 PM lorsqu'il est poussé, attiré ou téléporté. 2 fois par tour maximum."
+Breloque du Randonneur tenace,Maître α,"Le porteur gagne 3 PM lorsqu'il est poussé, attiré ou téléporté. 1 fois par tour maximum."
+Breloque du Randonneur tenace,Maître ẞ,"Le porteur gagne 2 PM lorsqu'il est poussé, attiré ou téléporté. 3 fois par tour maximum."
+Breloque du Guérisseur tenace,Novice,Le porteur est soigné d'une portion de ses PDV dans le meilleur élément (3-4) lorsqu'il est poussé ou attiré. Une fois par tour maximum.
+Breloque du Guérisseur tenace,Expert,Le porteur est soigné d'une portion de ses PDV dans le meilleur élément (5-7) lorsqu'il est poussé ou attiré. 2 fois par tour maximum.
+Breloque du Guérisseur tenace,Maître α,Le porteur est soigné d'une portion de ses PDV dans le meilleur élément (17-20) lorsqu'il est poussé ou attiré. Une fois par tour maximum.
+Breloque du Guérisseur tenace,Maître ẞ,Le porteur est soigné d'une portion de ses PDV dans le meilleur élément (12-15) lorsqu'il est poussé ou attiré. Trois fois par tour maximum.
+Breloque de l'Hémophile,Novice,"Augmente la vitalité maximum du porteur de 25% pour la durée du combat, mais lui applique l'état Insoignable (infini)."
+Breloque de l'Hémophile,Expert,"Augmente la vitalité maximum du porteur de 50% pour la durée du combat, mais lui applique l'état Insoignable (infini)."
+Breloque de l'Hémophile,Maître α,"Augmente la vitalité maximum du porteur de 100% pour la durée du combat, mais lui applique l'état Insoignable (infini)."
+Breloque de l'Hémophile,Maître ẞ,"Applique au porteur un bouclier équivalent à 60% de sa vitalité pour la durée du combat, mais lui applique l'état Insoignable (infini)."
+Breloque de l'Audacieux,Novice,Multiplie les dommages par 2 (70% de chance) ou soigne (30% de chance).
+Breloque de l'Audacieux,Expert,Multiplie les dommages par 2 (50% de chance) ou soigne (50% de chance).
+Breloque de l'Audacieux,Maître α,Les dégâts reçus soignent le lanceur dans 10% des cas.
+Breloque de l'Audacieux,Maître ẞ,Multiplie les dommages par 3 (50% de chance) ou soigne double (50% de chance).
+Breloque du Voile Sacré,Novice,"À chaque tour, réduit le premier dégât reçu de 25%."
+Breloque du Voile Sacré,Expert,"À chaque tour, réduit le premier dégât reçu de 50%."
+Breloque du Voile Sacré,Maître α,"À chaque tour, annule le premier dégât reçu."
+Breloque du Voile Sacré,Maître ẞ,"À chaque tour, réduit les 3 premiers dégâts reçus de 50%."
+Breloque de la Sentinelle,Novice,Le porteur gagne 30% de dommages à distance tant qu'il n'a pas consommé de PM.
+Breloque de la Sentinelle,Expert,Le porteur gagne 60% de dommages à distance tant qu'il n'a pas consommé de PM.
+Breloque de la Sentinelle,Maître α,Le porteur gagne 100% de dommages à distance tant qu'il n'a pas consommé de PM.
+Breloque de la Sentinelle,Maître ẞ,Le porteur gagne 60% de dommages à distance tant qu'il n'a pas consommé de PM.
+Breloque de la Tournée d'adieux,Novice,"Lorsque le porteur à 20% de vie ou moins, augmente les dommages de 30%. Retire les effets si le porteur repasse au-dessus de 20% de vie."
+Breloque de la Tournée d'adieux,Expert,"Lorsque le porteur à 30% de vie ou moins, augmente les dommages de 30%. Retire les effets si le porteur repasse au-dessus de 30% de vie."
+Breloque de la Tournée d'adieux,Maître α,"Lorsque le porteur à 50% de vie ou moins, augmente les dommages de 30%. Retire les effets si le porteur repasse au-dessus de 50% de vie,"
+Breloque de la Tournée d'adieux,Maître ẞ,"Lorsque le porteur à 30% de vie ou moins, augmente les dommages de 50%. Retire les effets si le porteur repasse au-dessus de 30% de vie."
+Breloque du Revenant,Novice,Une fois par combat permet d'être ressucité par un allié humain au début de son prochain tour. Le porteur revient avec 10% de points de vie.
+Breloque du Revenant,Expert,Une fois par combat permet d'être ressucité par un allié humain au début de son prochain tour. Le porteur revient avec 20% de points de vie.
+Breloque du Revenant,Maître α,Une fois par combat permet d'être ressucité par un allié humain au début de son prochain tour. Le porteur revient avec 25% de points de vie ainsi que 600 bouclier. Le bouclier se dissipe après 2 tours.
+Breloque du Revenant,Maître ẞ,Une fois par combat permet d'être ressucité par un allié humain au début de son prochain tour. Le porteur revient avec 25% de points de vie ainsi qu'un bonus de 30% de dégâts. Le bonus se dissipe après 2 tours.
