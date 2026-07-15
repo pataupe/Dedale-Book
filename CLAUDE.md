@@ -88,6 +88,48 @@ calculerStatsPersonnage(cubesEquipes) → { intelligence, agilite, force, chance
 calculerDegats(statsPersonnage, sortsEquipes) → { sortId, degatsMin, degatsMax }[]
 ```
 
+## Stats dérivées et bonus de panoplie (validés, implémentés dans `calculerStatsPersonnage`)
+
+Au-delà des stats brutes sommées telles quelles depuis les cubes, certaines stats affichées sur la fiche personnage se calculent différemment :
+
+- **Vitalité** = base **1050** + somme des bonus Vitalité des cubes
+- **PA** = base **7** + cubes + bonus panoplie
+- **PM** = base **3** + cubes + bonus panoplie
+- **Invocation** = base **1** + cubes
+- **PO**, **Sagesse**, **Soins**, **Puissance**, toutes les **Résistances**, **Dommages critique** (`DO_CRIT`), **Dommages poussée** (`DO_POU`) : base 0, simple somme des cubes (déjà géré génériquement, rien de spécial à coder)
+- **Tacle** = 1 par tranche entière de 10 Agilité (troncature, pas d'arrondi)
+- **Fuite** = 1 par tranche entière de 10 Chance (troncature) + bonus Fuite direct des cubes
+- **Retrait PA / Retrait PM** = 1 par tranche entière de 10 Sagesse (troncature). Pas de stat cube équivalente ; seules les **breloques** pourront l'augmenter (non géré pour l'instant, calcul limité aux cubes).
+- **Esquive PA / Esquive PM** = même palier Sagesse (10 → 1) **+ bonus direct des cubes** (stat `ESQUIVE_PA`/`ESQUIVE_PM`, confirmée présente sur certains cubes) — contrairement au Retrait, les cubes peuvent bien booster l'Esquive.
+- **Dommages élémentaires affichés** (Terre/Eau/Feu/Air) = stat `DOMMAGES` (globale, jamais affichée seule) + `DO_<ELEMENT>` (propre à l'élément)
+- **Dommages critique** (`DO_CRIT`) : s'ajoute aux dommages uniquement sur un coup critique (hors crit, aucun effet). **Pas encore intégré à `calculerDegats`** (qui ne modélise pas encore les jets critiques) — valeur brute disponible dans les stats, calcul du coup critique lui-même à faire plus tard.
+- **Dommages poussée** (`DO_POU`) : formule `(132 + DO_POU) / 4 × NombreDeCasesPoussées` — **pas implémenté**, le nombre de cases de poussée n'est pour l'instant que du texte libre dans les données sorts. Pas urgent (dixit porteur de projet).
+- **Critique** (`%_COUP_CRITIQUE`) : base 0 + somme des cubes. Le % final d'un sort = `%_COUP_CRITIQUE` du sort + celui du personnage. **Pas encore intégré à `calculerDegats`**.
+
+### Bonus de panoplie
+
+Équiper **au moins 2 cubes** d'une même famille (élément, ou Lumière) donne un bonus de stats. Le bonus au palier atteint **remplace** celui du palier précédent (pas cumulatif entre paliers). Plusieurs panoplies de familles différentes équipées en même temps se cumulent entre elles. Un cube **Chaos** compte comme 1 cube de **chaque** famille (Air/Feu/Terre/Eau/Lumière) pour le calcul des paliers, mais n'a pas de panoplie propre.
+
+Valeurs connues à ce jour (config `PANOPLIES` dans `calcul.js`, facilement modifiable) :
+
+| Cubes Lumière | Bonus |
+|---|---|
+| 2 | +1 PM |
+| 3 | +1 PM, +1 PA |
+| 4 | +1 PM, +1 PA, +1 PO |
+| 5-9 | ⚠️ valeurs **fictives**, à corriger |
+
+| Cubes Air | Bonus |
+|---|---|
+| 2 | +50 Vita, +50 Agilité, +10 DO_AIR |
+| 3 | +100 Vita, +100 Agilité, +20 DO_AIR |
+| 4 | +150 Vita, +150 Agilité, +30 DO_AIR, +25 Puissance, +5 Dommages |
+| 5 | +200 Vita, +150 Agilité, +30 DO_AIR, +50 Puissance, +10 Dommages |
+| 6 | +250 Vita, +150 Agilité, +30 DO_AIR, +75 Puissance, +15 Dommages |
+| 7-9 | ⚠️ valeurs **fictives**, à corriger |
+
+**Terre, Eau, Feu : pas encore fournis** — à ajouter dans `PANOPLIES` (`calcul.js`) dès que connus.
+
 (Une version à une seule fonction `calculerDegats(cubesEquipes, sortsEquipes)` avait été proposée puis corrigée — l'étape intermédiaire d'agrégation des stats est centrale et doit rester séparée.)
 
 ## Modèle de données MySQL (schéma validé et implémenté)
@@ -188,14 +230,31 @@ Règles d'enchaînement :
 - Vérifié : `SELECT * FROM `Cube` WHERE element = 'Feu'` renvoie 75 résultats → critère "fini" de la Tâche 2 rempli
 - Commit : "Ajout des tables MySQL et scripts d'import (cubes, breloques, sorts)"
 
-### 🔜 Prochaine étape — Tâche 3
-Créer `server/logic/calcul.js` avec les 2 fonctions pures `calculerStatsPersonnage` et `calculerDegats`, plus tests unitaires (Jest ou Vitest — à trancher, Vitest cohérent avec Vite déjà utilisé côté client). Formaliser noir sur blanc le taux de conversion stat → % de dégâts (encore en suspens).
+### ✅ Jour 3 (suite) — Tâche 3 terminée
+- `server/logic/calcul.js` créé avec les 2 fonctions pures `calculerStatsPersonnage` et `calculerDegats`
+- Formule de conversion validée et implémentée : `dégâts = base × (1 + 0,01 × stat_efficace) + bonus_dommages`
+  - `stat_efficace` (élément du sort) = caractéristique liée à l'élément (Force→Terre, Intelligence→Feu, Chance→Eau, Agilité→Air) **+ Puissance** (1 Puissance = 1 stat dans tous les éléments)
+  - `bonus_dommages` = stat `DOMMAGES` (globale, tous éléments) + stat `DO_<ELEMENT>` (propre à l'élément, ex: `DO_FEU`)
+  - Chaos et Lumière ne sont **pas** des éléments de frappe (juste des familles de cubes) ; les sorts Chaos/Lumière tapent soit dans le "meilleur élément" (le plus avantageux des 4 pour le perso), soit dans 2 éléments à la fois (2 calculs séparés), soit pas de dégâts
+  - Arrondi à l'entier le plus proche **uniquement à l'affichage final** (jamais pendant le calcul, ni dans les calculs intermédiaires)
+- `calculerStatsPersonnage` agrège génériquement toutes les stats brutes des cubes équipés (pas de liste figée), + calcule l'Initiative dérivée (Force + Intelligence + Chance + Agilité + bonus Initiative des cubes Lumière)
+- Vitest installé en version **2.x** (la 4 nécessite Node 20+, incompatible avec le Node 18 installé) ; 15 tests unitaires écrits et tous verts, dont les 2 exemples chiffrés validés par le porteur de projet (250 stat + 11 dommages sur base 20 → 81 ; 450 Intel + 170 Puissance sur sort Feu 20-22 → 144 à 158)
+- Bonus découvert au passage : `server/node_modules/` et `server/.env` étaient suivis par git depuis le tout premier commit (pas de `.gitignore` racine) → `.gitignore` créé, fichiers désinscrits du suivi (sans suppression locale)
+- Commit : "Ajout du module de calcul de degats (Tache 3) + gitignore"
 
-**Point à trancher avant de coder** : les cubes contiennent, en plus des caractéristiques (Intelligence, Agilité, Force, Chance, Vitalité), des dommages élémentaires directs déjà présents (`DO_AIR`, `DO_FEU`, `DO_TERRE`, `DO_EAU`) et des bonus globaux (`PUISSANCE`, `DOMMAGES`, `DO_CRIT`, `%_COUP_CRITIQUE`, résistances, PA/PM/PO...). À décider : le calcul de dégâts d'un sort doit-il agréger uniquement la conversion caractéristique→élément, ou aussi ces dommages/bonus directs quand ils s'appliquent ?
+### ✅ Jour 3 (suite 2) — Stats dérivées + bonus de panoplie ajoutés
+- Toutes les formules de stats dérivées (Vitalité, PA, PM, Invocation, Tacle, Fuite, Retrait/Esquive PA/PM, Dommages élémentaires affichés) intégrées dans `calculerStatsPersonnage` — détail complet dans la section "Stats dérivées et bonus de panoplie" ci-dessus
+- Bonus de panoplie implémentés (config `PANOPLIES` dans `calcul.js`, facilement éditable), avec gestion du comptage des cubes Chaos (comptent comme 1 cube de chaque famille)
+- 28 tests unitaires au total, tous verts
+- Pas encore commité (à faire)
+
+### 🔜 Prochaine étape — Tâche 4
+API Express en lecture seule pour exposer les équipements (`GET /api/cubes`, `/api/charms`, `/api/spells`, recherche/filtres).
 
 ## Points encore en suspens
 
 - **Hébergeur** : pas encore choisi (doit supporter Node + Express + MySQL)
-- **Taux de conversion stat → % de dégâts** : à formaliser précisément à la Tâche 3
-- **Périmètre exact du calcul** (caractéristiques seules vs. + dommages directs/bonus globaux des cubes) : à trancher au démarrage de la Tâche 3
+- **Bonus de panoplie Terre/Eau/Feu** : pas encore fournis (seuls Lumière et Air sont connus) — à ajouter dans `PANOPLIES` (`calcul.js`) dès que disponibles
+- **Paliers 5-9 (Lumière) et 7-9 (Air) des panoplies** : valeurs actuellement fictives en attendant les vraies (voir section "Stats dérivées et bonus de panoplie")
+- **Dommages critique et dommages poussée** : formules connues mais pas encore intégrées à `calculerDegats` (pas de modélisation du jet critique ni du nombre de cases de poussée pour l'instant) — pas urgent
 - **Sourcing des images** des équipements : prévu après le MVP

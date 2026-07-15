@@ -23,14 +23,99 @@ const DOMMAGES_DIRECTS_PAR_ELEMENT = {
   Air: 'DO_AIR',
 };
 
+// Valeurs de base du personnage hors équipement (avant tout bonus de cube/panoplie).
+const BASES_PERSONNAGE = {
+  VITALITE: 1050,
+  PA: 7,
+  PM: 3,
+  INVOCATION: 1,
+};
+
+// Bonus de panoplie : équiper N cubes d'une même famille (élément, ou Lumière) donne un
+// bonus de stats. Le bonus au palier N remplace celui du palier N-1 (pas cumulatif entre
+// paliers). Un cube Chaos compte comme 1 cube de CHAQUE famille ci-dessous (pas de bonus
+// propre). Seuls Lumière et Air sont renseignés pour l'instant (valeurs données par le
+// porteur de projet) ; Terre/Eau/Feu restent à ajouter ici quand les valeurs seront
+// connues. Les paliers 7-9 de Lumière et Air sont des valeurs FICTIVES en attendant les
+// vraies données — à corriger ici, aucun autre fichier à toucher.
+const PANOPLIES = {
+  'Lumière': {
+    2: { PM: 1 },
+    3: { PM: 1, PA: 1 },
+    4: { PM: 1, PA: 1, PO: 1 },
+    // paliers 5 à 9 : fictifs, à corriger
+    5: { PM: 1, PA: 1, PO: 2 },
+    6: { PM: 2, PA: 1, PO: 2 },
+    7: { PM: 2, PA: 2, PO: 2 },
+    8: { PM: 2, PA: 2, PO: 3 },
+    9: { PM: 2, PA: 2, PO: 3, INVOCATION: 1 },
+  },
+  Air: {
+    2: { VITALITE: 50, AGILITE: 50, DO_AIR: 10 },
+    3: { VITALITE: 100, AGILITE: 100, DO_AIR: 20 },
+    4: { VITALITE: 150, AGILITE: 150, DO_AIR: 30, PUISSANCE: 25, DOMMAGES: 5 },
+    5: { VITALITE: 200, AGILITE: 150, DO_AIR: 30, PUISSANCE: 50, DOMMAGES: 10 },
+    6: { VITALITE: 250, AGILITE: 150, DO_AIR: 30, PUISSANCE: 75, DOMMAGES: 15 },
+    // paliers 7 à 9 : fictifs, à corriger
+    7: { VITALITE: 300, AGILITE: 150, DO_AIR: 30, PUISSANCE: 100, DOMMAGES: 20 },
+    8: { VITALITE: 350, AGILITE: 150, DO_AIR: 30, PUISSANCE: 125, DOMMAGES: 25 },
+    9: { VITALITE: 400, AGILITE: 150, DO_AIR: 30, PUISSANCE: 150, DOMMAGES: 30 },
+  },
+  // Terre: {}, Eau: {}, Feu: {} — à ajouter quand les valeurs seront fournies.
+};
+
+// Compte le nombre de cubes équipés par famille (Air, Feu, Terre, Eau, Lumière). Un
+// cube Chaos compte comme 1 cube de chaque famille (mais pas de sa propre famille,
+// Chaos n'a pas de panoplie).
+function compterCubesParFamille(cubesEquipes) {
+  const familles = ['Air', 'Feu', 'Terre', 'Eau', 'Lumière'];
+  const compte = Object.fromEntries(familles.map((f) => [f, 0]));
+
+  for (const cube of cubesEquipes || []) {
+    if (!cube || !cube.element) continue;
+    if (cube.element === 'Chaos') {
+      familles.forEach((f) => { compte[f] += 1; });
+    } else if (compte[cube.element] !== undefined) {
+      compte[cube.element] += 1;
+    }
+  }
+
+  return compte;
+}
+
+// Calcule les bonus de stats apportés par les panoplies actives (>= 2 cubes d'une même
+// famille), en tenant compte des cubes Chaos comptés dans chaque famille.
+function calculerBonusPanoplies(cubesEquipes) {
+  const compte = compterCubesParFamille(cubesEquipes);
+  const bonus = {};
+
+  for (const [famille, nombre] of Object.entries(compte)) {
+    const table = PANOPLIES[famille];
+    if (!table || nombre < 2) continue;
+
+    const paliersAtteignables = Object.keys(table).map(Number).filter((p) => p <= nombre);
+    if (paliersAtteignables.length === 0) continue;
+    const palier = Math.max(...paliersAtteignables);
+
+    for (const [cle, valeur] of Object.entries(table[palier])) {
+      bonus[cle] = (bonus[cle] || 0) + valeur;
+    }
+  }
+
+  return bonus;
+}
+
 /**
  * Étape 1 : agrège les stats du personnage à partir des cubes équipés.
  *
- * @param {Array<{ stats: Array<{ key: string, value: number }> } | null>} cubesEquipes
- *   Liste des cubes équipés (format `cubes_v2.json` : { stats: [{ key, value, label }] }).
+ * @param {Array<{ element: string, stats: Array<{ key: string, value: number }> } | null>} cubesEquipes
+ *   Liste des cubes équipés (format `cubes_v2.json` : { element, stats: [{ key, value, label }] }).
  *   Les emplacements vides (null/undefined) sont ignorés.
- * @returns {Object} Stats brutes sommées par clé (ex: { FORCE: 150, INTELLIGENCE: 450,
- *   PUISSANCE: 170, DOMMAGES: 11, ... }), plus une clé dérivée `INITIATIVE_TOTALE`.
+ * @returns {Object} Stats brutes sommées par clé (cubes + bonus de panoplie inclus), plus
+ *   les stats dérivées : `INITIATIVE_TOTALE`, `VITALITE_TOTALE`, `PA_TOTAL`, `PM_TOTAL`,
+ *   `INVOCATION_TOTALE`, `TACLE_TOTAL`, `FUITE_TOTALE`, `RETRAIT_PA_TOTAL`,
+ *   `RETRAIT_PM_TOTAL`, `ESQUIVE_PA_TOTALE`, `ESQUIVE_PM_TOTALE`, `DOMMAGES_FEU_TOTAL`,
+ *   `DOMMAGES_TERRE_TOTAL`, `DOMMAGES_EAU_TOTAL`, `DOMMAGES_AIR_TOTAL`.
  */
 function calculerStatsPersonnage(cubesEquipes) {
   const stats = {};
@@ -42,11 +127,46 @@ function calculerStatsPersonnage(cubesEquipes) {
     }
   }
 
+  // Bonus de panoplie (>= 2 cubes d'une même famille), ajoutés aux stats brutes avant
+  // tout calcul dérivé (PA/PM total, etc. doivent en tenir compte).
+  const bonusPanoplies = calculerBonusPanoplies(cubesEquipes);
+  for (const [cle, valeur] of Object.entries(bonusPanoplies)) {
+    stats[cle] = (stats[cle] || 0) + valeur;
+  }
+
   // Initiative = somme des 4 caractéristiques offensives + bonus Initiative éventuel
   // (cubes Lumière). Ne rentre jamais dans le calcul de dégâts, affichage seulement.
   stats.INITIATIVE_TOTALE =
     (stats.FORCE || 0) + (stats.INTELLIGENCE || 0) + (stats.CHANCE || 0) +
     (stats.AGILITE || 0) + (stats.INITIATIVE || 0);
+
+  // Stats avec une valeur de base non nulle hors équipement.
+  stats.VITALITE_TOTALE = BASES_PERSONNAGE.VITALITE + (stats.VITALITE || 0);
+  stats.PA_TOTAL = BASES_PERSONNAGE.PA + (stats.PA || 0);
+  stats.PM_TOTAL = BASES_PERSONNAGE.PM + (stats.PM || 0);
+  stats.INVOCATION_TOTALE = BASES_PERSONNAGE.INVOCATION + (stats.INVOCATION || 0);
+
+  // Tacle = 1 par tranche de 10 Agilité (troncature). Fuite = 1 par tranche de 10
+  // Chance (troncature) + bonus Fuite direct des cubes.
+  stats.TACLE_TOTAL = Math.floor((stats.AGILITE || 0) / 10);
+  stats.FUITE_TOTALE = Math.floor((stats.CHANCE || 0) / 10) + (stats.FUITE || 0);
+
+  // Retrait PA/PM et Esquive PA/PM partent toutes du même palier : 1 par tranche de 10
+  // Sagesse (troncature). Esquive PA/PM peut en plus être augmentée directement par des
+  // cubes (stat ESQUIVE_PA/ESQUIVE_PM). Retrait PA/PM n'a pas de stat cube équivalente ;
+  // seules les breloques pourront l'augmenter (non géré ici, cubes uniquement).
+  const palierSagesse = Math.floor((stats.SAGESSE || 0) / 10);
+  stats.RETRAIT_PA_TOTAL = palierSagesse;
+  stats.RETRAIT_PM_TOTAL = palierSagesse;
+  stats.ESQUIVE_PA_TOTALE = palierSagesse + (stats.ESQUIVE_PA || 0);
+  stats.ESQUIVE_PM_TOTALE = palierSagesse + (stats.ESQUIVE_PM || 0);
+
+  // Dommages élémentaires affichables sur la fiche perso = Dommages globaux + dommages
+  // directs de l'élément (la stat "Dommages" seule n'est jamais affichée telle quelle).
+  stats.DOMMAGES_FEU_TOTAL = (stats.DOMMAGES || 0) + (stats.DO_FEU || 0);
+  stats.DOMMAGES_TERRE_TOTAL = (stats.DOMMAGES || 0) + (stats.DO_TERRE || 0);
+  stats.DOMMAGES_EAU_TOTAL = (stats.DOMMAGES || 0) + (stats.DO_EAU || 0);
+  stats.DOMMAGES_AIR_TOTAL = (stats.DOMMAGES || 0) + (stats.DO_AIR || 0);
 
   return stats;
 }
