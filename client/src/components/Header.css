@@ -1,0 +1,37 @@
+.entete {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--bordure);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.entete__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.entete__logo img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.entete__nav {
+  display: flex;
+  gap: 20px;
+}
+
+.entete__nav a {
+  color: var(--texte-attenue);
+  font-size: 15px;
+}
+
+.entete__nav a:hover {
+  color: var(--texte);
+}

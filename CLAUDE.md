@@ -187,7 +187,7 @@ Index utiles à prévoir au minimum : `element`, `rang`/`evolution` sur `Cube` (
 
 ## Parcours utilisateur cible
 
-**Sans compte** : page d'accueil → "Voir les équipements" (liste/recherche/filtre cubes+breloques, libre) ou "Créer mon équipement" (déclenche la demande de compte).
+**Sans compte** : page d'accueil → "Voir les équipements" (liste/recherche/filtre cubes+breloques+sorts, libre — les 3 types d'équipement traités au même niveau) ou "Créer mon équipement" (déclenche la demande de compte).
 
 **Avec compte** : connexion → fiche personnage avec emplacements vides (9 cubes, 7 breloques, 9 sorts) → clic sur un emplacement vide → liste filtrée par type → sélection → retour fiche personnage remplie → onglet "Sorts" affichant les dégâts calculés → sauvegarde automatique à chaque changement → partage via lien unique consultable sans compte → gestion (voir/modifier/supprimer) des stuffs enregistrés.
 

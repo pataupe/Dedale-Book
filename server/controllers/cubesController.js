@@ -37,7 +37,26 @@ async function listerCubes(req, res) {
     [...params, limite, offset]
   );
 
-  res.json(cubes);
+  if (cubes.length === 0) {
+    return res.json([]);
+  }
+
+  // On récupère les stats de tous les cubes de la page en une seule requête,
+  // puis on les regroupe par cube_id (évite le N+1 requêtes).
+  const idsCubes = cubes.map((c) => c.id);
+  const [statsLignes] = await pool.query(
+    `SELECT cube_id, cle_stat AS \`key\`, valeur AS value, libelle AS label
+     FROM StatCube WHERE cube_id IN (${idsCubes.map(() => '?').join(',')})`,
+    idsCubes
+  );
+
+  const statsParCube = {};
+  for (const ligne of statsLignes) {
+    if (!statsParCube[ligne.cube_id]) statsParCube[ligne.cube_id] = [];
+    statsParCube[ligne.cube_id].push({ key: ligne.key, value: ligne.value, label: ligne.label });
+  }
+
+  res.json(cubes.map((cube) => ({ ...cube, stats: statsParCube[cube.id] || [] })));
 }
 
 // GET /api/cubes/:id — cube + ses stats jointes

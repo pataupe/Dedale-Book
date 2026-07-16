@@ -1,0 +1,50 @@
+.page-sorts {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-sorts__filtres {
+  margin-bottom: 24px;
+}
+
+.page-sorts__filtres input {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--bordure);
+  background: var(--bg-carte);
+  color: var(--texte);
+  font-size: 15px;
+  max-width: 320px;
+}
+
+.page-sorts__erreur {
+  color: var(--couleur-feu);
+}
+
+.page-sorts__grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.page-sorts__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.page-sorts__pagination button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--bordure);
+  background: var(--bg-carte);
+  color: var(--texte);
+}
+
+.page-sorts__pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

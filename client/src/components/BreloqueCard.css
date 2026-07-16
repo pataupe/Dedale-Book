@@ -1,0 +1,23 @@
+.carte-breloque {
+  background: var(--bg-carte);
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.carte-breloque__entete {
+  background: var(--texte-attenue);
+  color: #1a1a1a;
+  font-weight: 600;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.carte-breloque__effet {
+  margin: 0;
+  padding: 12px;
+  font-size: 13px;
+  color: var(--texte-attenue);
+}

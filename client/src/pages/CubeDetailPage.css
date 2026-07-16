@@ -1,0 +1,30 @@
+.page-detail-cube {
+  padding: 24px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.page-detail-cube__retour {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: var(--texte-attenue);
+}
+
+.page-detail-cube__carte {
+  font-size: 18px;
+}
+
+.page-detail-cube__carte .carte-cube__image {
+  flex: 0 0 120px;
+  height: 120px;
+}
+
+.page-detail-cube__carte .carte-cube__placeholder {
+  width: 90px;
+  height: 90px;
+}
+
+.page-detail-cube__carte .carte-cube__stats {
+  font-size: 16px;
+  gap: 8px;
+}

@@ -1,0 +1,33 @@
+.carte-sort {
+  background: var(--bg-carte);
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.carte-sort__entete {
+  background: var(--couleur-lumiere);
+  color: #1a1a1a;
+  font-weight: 600;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.carte-sort__corps {
+  padding: 12px;
+  font-size: 13px;
+  color: var(--texte-attenue);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.carte-sort__corps p {
+  margin: 0;
+}
+
+.carte-sort__description {
+  font-style: italic;
+}

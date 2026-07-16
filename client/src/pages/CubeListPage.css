@@ -1,0 +1,95 @@
+.page-cubes {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-cubes__filtres {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.page-cubes__filtres input {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--bordure);
+  background: var(--bg-carte);
+  color: var(--texte);
+  font-size: 15px;
+  max-width: 320px;
+}
+
+.page-cubes__elements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.page-cubes__elements button {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 2px solid var(--couleur-bouton, var(--bordure));
+  background: transparent;
+  color: var(--texte);
+  font-size: 14px;
+}
+
+.page-cubes__elements button.actif {
+  background: var(--couleur-bouton, var(--bordure));
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.page-cubes__rangs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.page-cubes__rangs button {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 2px solid var(--bordure);
+  background: transparent;
+  color: var(--texte);
+  font-size: 14px;
+}
+
+.page-cubes__rangs button.actif {
+  background: var(--texte-attenue);
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.page-cubes__erreur {
+  color: var(--couleur-feu);
+}
+
+.page-cubes__grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.page-cubes__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.page-cubes__pagination button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--bordure);
+  background: var(--bg-carte);
+  color: var(--texte);
+}
+
+.page-cubes__pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

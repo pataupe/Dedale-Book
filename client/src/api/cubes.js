@@ -1,0 +1,20 @@
+const BASE_URL = 'http://localhost:3001/api';
+
+export async function listerCubes({ nom = '', element = '', rang = '', limite = 24, offset = 0 } = {}) {
+  const params = new URLSearchParams();
+  if (nom) params.set('nom', nom);
+  if (element) params.set('element', element);
+  if (rang) params.set('rang', rang);
+  params.set('limit', limite);
+  params.set('offset', offset);
+
+  const reponse = await fetch(`${BASE_URL}/cubes?${params}`);
+  if (!reponse.ok) throw new Error('Erreur lors du chargement des cubes');
+  return reponse.json();
+}
+
+export async function obtenirCube(id) {
+  const reponse = await fetch(`${BASE_URL}/cubes/${id}`);
+  if (!reponse.ok) throw new Error('Cube introuvable');
+  return reponse.json();
+}
