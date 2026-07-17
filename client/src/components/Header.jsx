@@ -5,7 +5,7 @@ import './Header.css';
 function Header() {
   return (
     <header className="entete">
-      <Link to="/cubes" className="entete__logo">
+      <Link to="/" className="entete__logo">
         <img src={logo} alt="Dédalofus" />
         <span>Dédalofus</span>
       </Link>

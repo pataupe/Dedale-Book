@@ -1,0 +1,47 @@
+.page-accueil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 80px 24px;
+  gap: 16px;
+}
+
+.page-accueil__logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-bottom: 8px;
+}
+
+.page-accueil h1 {
+  margin: 0;
+  font-size: 40px;
+}
+
+.page-accueil p {
+  color: var(--texte-attenue);
+  margin: 0 0 24px;
+}
+
+.page-accueil__boutons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.page-accueil__bouton {
+  padding: 16px 32px;
+  border-radius: 8px;
+  background: var(--couleur-lumiere);
+  color: #1a1a1a;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.page-accueil__bouton--secondaire {
+  background: transparent;
+  border: 2px solid var(--bordure);
+  color: var(--texte);
+}

@@ -18,8 +18,11 @@ async function listerCubes(req, res) {
   const params = [];
 
   if (nom) {
-    conditions.push('nom LIKE ?');
-    params.push(`%${nom}%`);
+    // Le champ `nom` vaut toujours "Cube" pour les 420 cubes (aucune valeur distinctive) :
+    // la recherche libre doit donc aussi porter sur l'élément, le rang et le numéro,
+    // sinon taper "Feu", "Commun" ou "14" ne renvoie jamais rien.
+    conditions.push('(nom LIKE ? OR element LIKE ? OR rang LIKE ? OR numero LIKE ?)');
+    params.push(`%${nom}%`, `%${nom}%`, `%${nom}%`, `%${nom}%`);
   }
   if (element) {
     conditions.push('element = ?');
