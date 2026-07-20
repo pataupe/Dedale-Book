@@ -28,13 +28,22 @@ Dedalofus/
   server/     → Express
 ```
 
-- `server/index.js` : point d'entrée Express, route `GET /api/ping` de test, CORS activé
-- `server/.env` : `PORT=3001` + `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME=dedalofus` (connexion MySQL locale)
-- `server/scripts/` : scripts d'import Node (`import-cubes.js`, `import-breloques.js`, `import-sorts.js`), dépendent de `mysql2` et `csv-parse` (ajoutés à `server/package.json`)
-- `schema.sql` (racine du repo) : script de création de la base `dedalofus` et de ses 10 tables, à exécuter une seule fois
+- `server/index.js` : point d'entrée Express (CORS + `express.json()`), monte tous les routers + middleware d'erreur global
+- `server/.env` : `PORT=3001` + `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME=dedalofus` (connexion MySQL locale) + `JWT_SECRET`
+- `server/scripts/` : scripts d'import Node (`import-cubes.js`, `import-breloques.js`, `import-sorts.js`), dépendent de `mysql2` et `csv-parse`
+- `schema.sql` (racine du repo) : script de création de la base `dedalofus` et de ses tables (Utilisateur avec `pseudo` unique inclus), à exécuter une seule fois
 - `server/config/db.js` : pool de connexions MySQL (`mysql2/promise`)
-- `server/controllers/` + `server/routes/` : API REST en lecture seule (`/api/cubes`, `/api/breloques`, `/api/sorts`) — voir "État d'avancement" (Tâche 4)
-- `client/src/App.jsx` : fetch de test vers `/api/ping`
+- `server/logic/calcul.js` (+ `calcul.test.js`) : module de calcul de dégâts, 2 fonctions pures (Tâche 3)
+- `server/controllers/` + `server/routes/` : `cubesController`/`breloquesController`/`sortsController` (API lecture seule, Tâche 4) + `authController`/routes `auth` (inscription/connexion, Tâche 6)
+- `server/middleware/verifierToken.js` : middleware JWT, prêt à protéger les futures routes personnage/stuff (Tâche 7), pas encore branché sur aucune route
+- `client/src/pages/` : `HomePage`, `CubeListPage`/`CubeDetailPage`, `BreloqueListPage`, `SortListPage`, `ConnexionPage`, `InscriptionPage`, `PersonnagePage` (placeholder Tâche 7)
+- `client/src/components/` : `Header` (nav + état connexion), `CubeCard`, `BreloqueCard`, `SortCard`
+- `client/src/api/` : wrappers fetch (`cubes.js`, `breloques.js`, `sorts.js`, `auth.js`)
+- `client/src/context/AuthContext.jsx` : session (token + utilisateur) persistée dans `localStorage`
+- `client/src/constants/` : `elements.js`, `rangs.js` (cubes), `elementsSorts.js`, `rangsMaitrise.js` (Novice/Expert/Maître α/Maître ẞ, partagé breloques+sorts), `statsCubes.js` (35 stats vérifiées en base)
+- `client/src/assets/logo.webp` : logo du site
+- Thème sombre : fond `#4A433B`, variables couleur par élément dans `client/src/index.css`
+- `.claude/launch.json` : config pour prévisualiser le client (`npm run dev`, port 5173) via l'outil de preview
 
 ## Périmètre du MVP
 
@@ -141,7 +150,7 @@ Valeurs connues à ce jour (config `PANOPLIES` dans `calcul.js`, facilement modi
 
 ```
 Utilisateur
- - id, email, mot_de_passe_hash, cree_le
+ - id, email, pseudo (UNIQUE, 3-32 caractères), mot_de_passe_hash, cree_le
 
 Personnage
  - id, utilisateur_id (FK), nom, cree_le
@@ -187,7 +196,7 @@ Index utiles à prévoir au minimum : `element`, `rang`/`evolution` sur `Cube` (
 
 ## Parcours utilisateur cible
 
-**Sans compte** : page d'accueil → "Voir les équipements" (liste/recherche/filtre cubes+breloques+sorts, libre — les 3 types d'équipement traités au même niveau) ou "Créer mon équipement" (déclenche la demande de compte).
+**Sans compte** : les 3 types d'équipement (cubes, breloques, sorts) restent consultables librement avec recherche/filtres via le menu du header, sans compte nécessaire. La page d'accueil elle-même ne pousse plus que vers la création de compte — bouton unique "Créer mon équipement" (mis en valeur), pas de bouton "Voir les équipements" sur l'accueil (implémenté différemment de l'intention initiale de ce document, sur demande du porteur de projet).
 
 **Avec compte** : connexion → fiche personnage avec emplacements vides (9 cubes, 7 breloques, 9 sorts) → clic sur un emplacement vide → liste filtrée par type → sélection → retour fiche personnage remplie → onglet "Sorts" affichant les dégâts calculés → sauvegarde automatique à chaque changement → partage via lien unique consultable sans compte → gestion (voir/modifier/supprimer) des stuffs enregistrés.
 
@@ -195,11 +204,11 @@ Index utiles à prévoir au minimum : `element`, `rang`/`evolution` sur `Cube` (
 
 1. **Mise en place du projet** ✅ FAIT (Jour 1) — voir "État d'avancement" ci-dessous
 2. **Tables MySQL + import cubes/breloques/sorts** ✅ FAIT (Jour 3) — voir "État d'avancement" ci-dessous
-3. **Module de calcul (2 fonctions pures) + tests unitaires (Jest/Vitest)** ← PROCHAINE ÉTAPE
-4. API Express pour exposer les équipements (`GET /api/cubes`, `/api/breloques`, `/api/sorts`, recherche, filtres, pagination) — routes 100% en français, cohérent avec le reste du code
-5. Pages React liste + détail équipement (peut démarrer en parallèle de la tâche 6)
-6. Authentification (register/login, bcrypt, JWT, middleware de protection)
-7. Création de personnage + emplacements d'équipement
+3. **Module de calcul (2 fonctions pures) + tests unitaires** ✅ FAIT (Jour 3) — voir "État d'avancement" ci-dessous
+4. **API Express pour exposer les équipements** ✅ FAIT (Jour 3) — routes 100% en français, cohérent avec le reste du code
+5. **Pages React liste + détail équipement** ✅ FAIT — voir "État d'avancement" ci-dessous
+6. **Authentification (inscription/connexion, bcrypt, JWT)** ✅ FAIT — voir "État d'avancement" ci-dessous
+7. **Création de personnage + emplacements d'équipement** ← PROCHAINE ÉTAPE
 8. Branchement du calculateur sur la fiche perso (onglet Sorts)
 9. Sauvegarde automatique du stuff
 10. Partage par lien unique (`share_token`, route publique sans auth)
@@ -264,12 +273,36 @@ Règles d'enchaînement :
 - Testé en conditions réelles avec `curl` : filtres, détail, 404, recherche — tout fonctionne
 - Bug de session résolu : une ancienne instance du serveur (lancée plus tôt) squattait le port 3001 et masquait les nouvelles routes → tuée avant de retester
 
-### 🔜 Prochaine étape — Tâche 5 / Tâche 6 (en parallèle)
-- Tâche 5 : pages React liste + détail équipement (consultable sans compte)
-- Tâche 6 : authentification (register/login, bcrypt, JWT, middleware de protection)
+### ✅ Tâche 5 terminée — Pages React liste/détail + filtres avancés
+- `react-router-dom` ajouté ; Vite downgradé 8→5 et `@vitejs/plugin-react` 6→4 côté client (même incompatibilité Node 18 que Vitest, cf. Tâche 3)
+- Thème sombre créé (fond `#4A433B`, choisi par le porteur de projet façon DofusBook), couleur dédiée par élément, logo intégré (`client/src/assets/logo.webp`)
+- Cartes `CubeCard`/`BreloqueCard`/`SortCard` suivant la maquette fournie (entête + image/placeholder à gauche + stats à droite, format stat affiché `valeur libellé` ex: "6% Résistance Feu", espace prévu pour une future icône par stat)
+- 3 pages liste (Cubes/Breloques/Sorts) + détail Cube, toutes consultables sans compte, navigation commune dans le header
+- Page d'accueil : uniquement **"Créer mon équipement"** (gros bouton mis en valeur) si déconnecté ; **+ "Voir mes équipements"** si connecté (les deux pointent vers `/personnage`, placeholder Tâche 7) — le bouton "Voir les équipements" a été retiré de l'accueil (les 3 listes restent accessibles via le header)
+- Bug corrigé : le champ `nom` des cubes vaut toujours littéralement "Cube" (aucune valeur distinctive) → la recherche libre porte aussi sur `element`, `rang` et `numero` côté API
+- Filtres : cubes = élément + rang (sélection unique, reclique pour décocher) ; breloques + sorts = **multi-sélection** (plusieurs valeurs actives à la fois, OR entre elles) ; sorts ont aussi un filtre rang de maîtrise (Novice/Expert/Maître α/Maître ẞ, liste partagée avec les breloques via `rangsMaitrise.js`)
+- Filtres avancés cubes : bouton "+ de filtres" (transition CSS `grid-template-rows` 0fr→1fr, fluide sans hauteur fixe), une case à cocher par stat **réellement présente** sur au moins un cube (35 stats vérifiées via `SELECT DISTINCT` en base, `client/src/constants/statsCubes.js`), clic sur le texte ou la case fonctionne (label HTML natif), **combinées en ET** (le cube doit avoir toutes les stats cochées, pas une seule)
+- **Décision : mobile-first à partir de maintenant** (Tâche 7 incluse) pour tout nouveau code — les pages déjà construites ci-dessus n'ont pas été retouchées, aucune media query pour l'instant, passe dédiée à faire plus tard (voir "Points encore en suspens")
+- Catégories de filtres breloques (Dégâts/Mobilité/Soin.../Boss) demandées mais **pas encore décidées** par le porteur de projet, reportées à plus tard (plus de breloques à venir)
+
+### ✅ Tâche 6 terminée — Authentification
+- `bcryptjs` (plutôt que `bcrypt`, pas de compilation native à gérer sous Windows) + `jsonwebtoken`, token valide 30 jours
+- Routes `POST /api/auth/inscription` et `POST /api/auth/connexion` ; middleware `verifierToken.js` prêt pour protéger les routes personnage/stuff (Tâche 7), pas encore utilisé
+- Colonne `pseudo` ajoutée à `Utilisateur` (UNIQUE, 3 à 32 caractères) — un joueur ne doit pas être identifié juste par son email ; le header affiche le pseudo (pas l'email) une fois connecté
+- Anti-doublon : vérification email+pseudo avant insertion, **et** filet de sécurité contre une race condition (contrainte `UNIQUE` en base + catch propre de l'erreur `ER_DUP_ENTRY`, réponse 409 au lieu d'une 500)
+- Regex email stricte (norme HTML5, domaine avec point obligatoire) pour rejeter les faux emails type `0@0`, qui passaient auparavant sans aucune validation de format
+- `AuthContext` React : session (token + utilisateur) persistée dans `localStorage`, survit aux rafraîchissements
+- Redirections : un utilisateur déjà connecté qui visite `/connexion` ou `/inscription` est redirigé automatiquement (plus de formulaire réaffiché inutilement)
+- Google OAuth demandé puis **repoussé** après plus tard : complexité de config externe (Google Cloud, redirect URI) non justifiée pour le MVP d'un site bénévole
+- Repo GitHub : ancienne branche `master` (vieux prototype statique sans rapport, un seul commit) renommée en `archive` ; remote local mis à jour vers la nouvelle URL `pataupe/Dedalofus` (le repo avait été renommé côté GitHub, ancien nom `Dedale-Book`)
+
+### 🔜 Prochaine étape — Tâche 7
+Création de personnage + emplacements d'équipement (9 cubes, 7 breloques, 9 sorts), protégée par le token JWT (middleware `verifierToken.js` déjà prêt). Coder en **mobile-first** (décision prise en Tâche 5).
 
 ## Points encore en suspens
 
+- **Responsive mobile-first sur les pages déjà construites** (Tâche 5 : accueil, Cubes/Breloques/Sorts, Connexion/Inscription) : aucune media query pour l'instant, pas testé sur petit écran. La convention mobile-first ne s'applique qu'au code écrit *à partir de* la Tâche 7 — une passe dédiée reste à faire sur l'existant.
+- **Vulnérabilités npm (Dependabot)** : 9 signalées sur GitHub, dues au downgrade de Vite (8→5) et Vitest (4→2) pour compatibilité Node 18. Dépendances de développement uniquement (pas exposées en prod) — disparaîtront si le projet passe un jour à Node 20+.
 - **Hébergeur** : pas encore choisi (doit supporter Node + Express + MySQL)
 - **Bonus de panoplie Terre/Eau/Feu** : pas encore fournis (seuls Lumière et Air sont connus) — à ajouter dans `PANOPLIES` (`calcul.js`) dès que disponibles
 - **Paliers 5-9 (Lumière) et 7-9 (Air) des panoplies** : valeurs actuellement fictives en attendant les vraies (voir section "Stats dérivées et bonus de panoplie")
