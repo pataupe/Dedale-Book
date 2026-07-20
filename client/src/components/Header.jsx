@@ -19,18 +19,28 @@ function Header() {
         <span>Dédalofus</span>
       </Link>
       <nav className="entete__nav">
-        <Link to="/cubes">Cubes</Link>
-        <Link to="/breloques">Breloques</Link>
-        <Link to="/sorts">Sorts</Link>
+        <div className="entete__liens">
+          <Link to="/cubes" className="entete__lien">
+            Cubes
+          </Link>
+          <Link to="/breloques" className="entete__lien">
+            Breloques
+          </Link>
+          <Link to="/sorts" className="entete__lien">
+            Sorts
+          </Link>
+        </div>
         {session ? (
-          <>
+          <div className="entete__compte">
             <span className="entete__pseudo">{session.utilisateur.pseudo}</span>
             <button className="entete__deconnexion" onClick={seDeconnecter}>
               Déconnexion
             </button>
-          </>
+          </div>
         ) : (
-          <Link to="/connexion">Connexion</Link>
+          <Link to="/connexion" className="entete__connexion">
+            Connexion
+          </Link>
         )}
       </nav>
     </header>

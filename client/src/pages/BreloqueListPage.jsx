@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { listerBreloques } from '../api/breloques';
-import { RANGS_BRELOQUES } from '../constants/rangsBreloques';
+import { RANGS_MAITRISE } from '../constants/rangsMaitrise';
 import BreloqueCard from '../components/BreloqueCard';
 import './BreloqueListPage.css';
 
@@ -45,7 +45,7 @@ function BreloqueListPage() {
         />
 
         <div className="page-breloques__rangs">
-          {RANGS_BRELOQUES.map((rang) => (
+          {RANGS_MAITRISE.map((rang) => (
             <button
               key={rang}
               className={rangActif === rang ? 'actif' : ''}

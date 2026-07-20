@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { listerCubes } from '../api/cubes';
 import { ELEMENTS } from '../constants/elements';
 import { RANGS } from '../constants/rangs';
+import { STATS_CUBES } from '../constants/statsCubes';
 import CubeCard from '../components/CubeCard';
 import './CubeListPage.css';
 
@@ -13,10 +14,16 @@ function basculer(valeurActuelle, valeurCliquee) {
   return valeurActuelle === valeurCliquee ? '' : valeurCliquee;
 }
 
+function basculerMulti(liste, valeur) {
+  return liste.includes(valeur) ? liste.filter((v) => v !== valeur) : [...liste, valeur];
+}
+
 function CubeListPage() {
   const [recherche, setRecherche] = useState('');
   const [elementActif, setElementActif] = useState('');
   const [rangActif, setRangActif] = useState('');
+  const [statsActives, setStatsActives] = useState([]);
+  const [filtresOuverts, setFiltresOuverts] = useState(false);
   const [page, setPage] = useState(0);
   const [cubes, setCubes] = useState([]);
   const [chargement, setChargement] = useState(true);
@@ -25,7 +32,7 @@ function CubeListPage() {
   // On revient à la page 0 dès que la recherche ou un filtre change.
   useEffect(() => {
     setPage(0);
-  }, [recherche, elementActif, rangActif]);
+  }, [recherche, elementActif, rangActif, statsActives]);
 
   useEffect(() => {
     setChargement(true);
@@ -35,13 +42,14 @@ function CubeListPage() {
       nom: recherche,
       element: elementActif,
       rang: rangActif,
+      stats: statsActives,
       limite: PAR_PAGE,
       offset: page * PAR_PAGE,
     })
       .then(setCubes)
       .catch(() => setErreur('Impossible de charger les cubes. Le serveur est-il lancé ?'))
       .finally(() => setChargement(false));
-  }, [recherche, elementActif, rangActif, page]);
+  }, [recherche, elementActif, rangActif, statsActives, page]);
 
   return (
     <div className="page-cubes">
@@ -84,6 +92,32 @@ function CubeListPage() {
               {rang}
             </button>
           ))}
+        </div>
+
+        <button
+          type="button"
+          className="page-cubes__bouton-plus-filtres"
+          onClick={() => setFiltresOuverts((o) => !o)}
+          aria-expanded={filtresOuverts}
+        >
+          + de filtres {filtresOuverts ? '▲' : '▼'}
+        </button>
+
+        <div className={`page-cubes__plus-filtres ${filtresOuverts ? 'ouvert' : ''}`}>
+          <div className="page-cubes__plus-filtres-contenu">
+            <div className="page-cubes__stats">
+              {STATS_CUBES.map((stat) => (
+                <label key={stat.cle} className="page-cubes__stat-case">
+                  <input
+                    type="checkbox"
+                    checked={statsActives.includes(stat.cle)}
+                    onChange={() => setStatsActives((actuelles) => basculerMulti(actuelles, stat.cle))}
+                  />
+                  {stat.libelle}
+                </label>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 

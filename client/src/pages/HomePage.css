@@ -29,15 +29,22 @@
   gap: 16px;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
 }
 
 .page-accueil__bouton {
   padding: 16px 32px;
   border-radius: 8px;
-  background: var(--couleur-lumiere);
-  color: #1a1a1a;
   font-weight: 600;
   font-size: 16px;
+}
+
+.page-accueil__bouton--principal {
+  padding: 22px 48px;
+  font-size: 20px;
+  background: var(--couleur-lumiere);
+  color: #1a1a1a;
+  box-shadow: 0 4px 16px rgba(232, 197, 71, 0.35);
 }
 
 .page-accueil__bouton--secondaire {

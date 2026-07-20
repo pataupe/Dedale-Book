@@ -63,6 +63,58 @@
   font-weight: 600;
 }
 
+.page-cubes__bouton-plus-filtres {
+  align-self: flex-start;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--bordure);
+  background: var(--bg-carte);
+  color: var(--texte);
+  font-size: 14px;
+}
+
+.page-cubes__bouton-plus-filtres:hover {
+  background: var(--bg-carte-survol);
+}
+
+/* Transition douce d'ouverture/fermeture sans connaître la hauteur exacte du
+   contenu (0fr -> 1fr anime naturellement, contrairement à max-height). */
+.page-cubes__plus-filtres {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.page-cubes__plus-filtres.ouvert {
+  grid-template-rows: 1fr;
+}
+
+.page-cubes__plus-filtres-contenu {
+  overflow: hidden;
+}
+
+.page-cubes__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px 20px;
+  padding: 16px;
+  background: var(--bg-carte);
+  border-radius: 8px;
+}
+
+.page-cubes__stat-case {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--texte);
+  cursor: pointer;
+}
+
+.page-cubes__stat-case input {
+  cursor: pointer;
+}
+
 .page-cubes__erreur {
   color: var(--couleur-feu);
 }

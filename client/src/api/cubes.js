@@ -1,10 +1,18 @@
 const BASE_URL = 'http://localhost:3001/api';
 
-export async function listerCubes({ nom = '', element = '', rang = '', limite = 24, offset = 0 } = {}) {
+export async function listerCubes({
+  nom = '',
+  element = '',
+  rang = '',
+  stats = [],
+  limite = 24,
+  offset = 0,
+} = {}) {
   const params = new URLSearchParams();
   if (nom) params.set('nom', nom);
   if (element) params.set('element', element);
   if (rang) params.set('rang', rang);
+  if (stats.length) params.set('stats', stats.join(','));
   params.set('limit', limite);
   params.set('offset', offset);
 

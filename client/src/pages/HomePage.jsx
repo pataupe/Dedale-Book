@@ -13,15 +13,17 @@ function HomePage() {
       <p>Prépare ton stuff pour le Dédale de Dofus Touch.</p>
 
       <div className="page-accueil__boutons">
-        <Link to="/cubes" className="page-accueil__bouton">
-          Voir les équipements
-        </Link>
         <Link
           to={session ? '/personnage' : '/inscription'}
-          className="page-accueil__bouton page-accueil__bouton--secondaire"
+          className="page-accueil__bouton page-accueil__bouton--principal"
         >
           Créer mon équipement
         </Link>
+        {session && (
+          <Link to="/personnage" className="page-accueil__bouton page-accueil__bouton--secondaire">
+            Voir mes équipements
+          </Link>
+        )}
       </div>
     </div>
   );

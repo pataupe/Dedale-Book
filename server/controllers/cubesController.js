@@ -9,9 +9,11 @@ function parserPagination(query) {
   return { limite, offset };
 }
 
-// GET /api/cubes?nom=&element=&rang=&limit=&offset=
+// GET /api/cubes?nom=&element=&rang=&stats=&limit=&offset=
+// `stats` accepte plusieurs clés séparées par des virgules (ex: "AGILITE,DO_AIR") :
+// renvoie les cubes ayant AU MOINS UNE de ces stats (OR).
 async function listerCubes(req, res) {
-  const { nom, element, rang } = req.query;
+  const { nom, element, rang, stats } = req.query;
   const { limite, offset } = parserPagination(req.query);
 
   const conditions = [];
@@ -31,6 +33,13 @@ async function listerCubes(req, res) {
   if (rang) {
     conditions.push('rang = ?');
     params.push(rang);
+  }
+  const listeStats = stats ? stats.split(',').filter(Boolean) : [];
+  if (listeStats.length) {
+    conditions.push(
+      `id IN (SELECT cube_id FROM StatCube WHERE cle_stat IN (${listeStats.map(() => '?').join(',')}))`
+    );
+    params.push(...listeStats);
   }
 
   const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';

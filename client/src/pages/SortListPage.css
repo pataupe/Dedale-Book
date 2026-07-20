@@ -5,6 +5,9 @@
 }
 
 .page-sorts__filtres {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   margin-bottom: 24px;
 }
 
@@ -16,6 +19,27 @@
   color: var(--texte);
   font-size: 15px;
   max-width: 320px;
+}
+
+.page-sorts__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.page-sorts__options button {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 2px solid var(--bordure);
+  background: transparent;
+  color: var(--texte);
+  font-size: 14px;
+}
+
+.page-sorts__options button.actif {
+  background: var(--texte-attenue);
+  color: #1a1a1a;
+  font-weight: 600;
 }
 
 .page-sorts__erreur {

@@ -9,9 +9,17 @@ function parserPagination(query) {
   return { limite, offset };
 }
 
-// GET /api/sorts?nom=&element=&rang=&limit=&offset=
+function parserListe(valeur) {
+  return valeur ? valeur.split(',').filter(Boolean) : [];
+}
+
+// GET /api/sorts?nom=&elements=&rangs=&limit=&offset=
+// `elements` et `rangs` acceptent plusieurs valeurs séparées par des virgules
+// (plusieurs filtres actifs en même temps, combinés en OR entre eux).
 async function listerSorts(req, res) {
-  const { nom, element, rang } = req.query;
+  const { nom } = req.query;
+  const elements = parserListe(req.query.elements);
+  const rangs = parserListe(req.query.rangs);
   const { limite, offset } = parserPagination(req.query);
 
   const conditions = [];
@@ -21,13 +29,15 @@ async function listerSorts(req, res) {
     conditions.push('nom LIKE ?');
     params.push(`%${nom}%`);
   }
-  if (element) {
-    conditions.push('element = ?');
-    params.push(element);
+  if (elements.length) {
+    // LIKE plutôt que = : certains sorts ont plusieurs éléments à la fois
+    // stockés dans un seul champ texte (ex: "Feu, Air").
+    conditions.push(`(${elements.map(() => 'element LIKE ?').join(' OR ')})`);
+    elements.forEach((el) => params.push(`%${el}%`));
   }
-  if (rang) {
-    conditions.push('rang_evolution = ?');
-    params.push(rang);
+  if (rangs.length) {
+    conditions.push(`(${rangs.map(() => 'rang_evolution = ?').join(' OR ')})`);
+    params.push(...rangs);
   }
 
   const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';

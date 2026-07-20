@@ -26,15 +26,47 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
-.entete__nav a {
-  color: var(--texte-attenue);
-  font-size: 15px;
+.entete__liens {
+  display: flex;
+  gap: 10px;
 }
 
-.entete__nav a:hover {
+/* Boutons de navigation (Cubes/Breloques/Sorts) : mis en valeur, bien
+   distincts visuellement du bouton Connexion. */
+.entete__lien {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: var(--bg-carte);
   color: var(--texte);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.entete__lien:hover {
+  background: var(--bg-carte-survol);
+}
+
+.entete__connexion {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 2px solid var(--couleur-lumiere);
+  color: var(--couleur-lumiere);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.entete__connexion:hover {
+  background: var(--couleur-lumiere);
+  color: #1a1a1a;
+}
+
+.entete__compte {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .entete__pseudo {
@@ -46,8 +78,8 @@
 .entete__deconnexion {
   background: transparent;
   border: 1px solid var(--bordure);
-  border-radius: 6px;
-  padding: 6px 12px;
+  border-radius: 20px;
+  padding: 6px 14px;
   color: var(--texte);
   font-size: 14px;
 }
