@@ -299,6 +299,11 @@ Règles d'enchaînement :
 ### 🔜 Prochaine étape — Tâche 7
 Création de personnage + emplacements d'équipement (9 cubes, 7 breloques, 9 sorts), protégée par le token JWT (middleware `verifierToken.js` déjà prêt). Coder en **mobile-first** (décision prise en Tâche 5).
 
+Détail du travail à faire :
+- **Backend** : tables `Personnage`, `Equipement`, `EquipementCube`, `EquipementBreloque`, `EquipementSort` déjà créées en base depuis la Tâche 2 mais jamais encore utilisées par aucune route. Il faut : routes protégées (créer un personnage, créer un "stuff" avec ses emplacements vides), routes pour remplir un emplacement (associer un cube/breloque/sort à un emplacement).
+- **Frontend** : remplacer la page `/personnage` (placeholder actuel "Bientôt disponible") par la vraie fiche — liste des personnages du joueur + bouton "créer un personnage", fiche avec les emplacements vides, clic sur un emplacement vide → réutilise les listes déjà construites (Cubes/Breloques/Sorts, Tâche 5) pour choisir → retour sur la fiche remplie.
+- **Question encore ouverte (pas tranchée)** : démarrer par un premier bout simple et testable (juste la création de personnage, nom seul, sans équipement) puis itérer, ou construire personnage + emplacements + sélection d'un coup ? À décider en début de Tâche 7.
+
 ## Points encore en suspens
 
 - **Responsive mobile-first sur les pages déjà construites** (Tâche 5 : accueil, Cubes/Breloques/Sorts, Connexion/Inscription) : aucune media query pour l'instant, pas testé sur petit écran. La convention mobile-first ne s'applique qu'au code écrit *à partir de* la Tâche 7 — une passe dédiée reste à faire sur l'existant.
