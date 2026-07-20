@@ -42,6 +42,67 @@
   font-weight: 600;
 }
 
+.page-breloques__bouton-plus-filtres {
+  align-self: flex-start;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--bordure);
+  background: var(--bg-carte);
+  color: var(--texte);
+  font-size: 14px;
+}
+
+.page-breloques__bouton-plus-filtres:hover {
+  background: var(--bg-carte-survol);
+}
+
+/* Même technique que sur la page Cubes : transition douce sans hauteur fixe. */
+.page-breloques__plus-filtres {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.page-breloques__plus-filtres.ouvert {
+  grid-template-rows: 1fr;
+}
+
+.page-breloques__plus-filtres-contenu {
+  overflow: hidden;
+}
+
+.page-breloques__categories-note {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--texte-attenue);
+  font-style: italic;
+}
+
+.page-breloques__categories-grille {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(160px, 1fr));
+  gap: 8px;
+  max-width: 500px;
+  padding: 16px;
+  background: var(--bg-carte);
+  border-radius: 8px;
+}
+
+.page-breloques__categories-grille button {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 2px solid var(--bordure);
+  background: transparent;
+  color: var(--texte);
+  font-size: 14px;
+}
+
+.page-breloques__categories-grille button.actif {
+  background: var(--texte-attenue);
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
 .page-breloques__erreur {
   color: var(--couleur-feu);
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { listerBreloques } from '../api/breloques';
 import { RANGS_MAITRISE } from '../constants/rangsMaitrise';
+import { CATEGORIES_BRELOQUES } from '../constants/categoriesBreloques';
 import BreloqueCard from '../components/BreloqueCard';
 import './BreloqueListPage.css';
 
@@ -14,6 +15,11 @@ function basculerMulti(liste, valeur) {
 function BreloqueListPage() {
   const [recherche, setRecherche] = useState('');
   const [rangsActifs, setRangsActifs] = useState([]);
+  // Filtre catégorie : purement visuel pour l'instant, pas envoyé à l'API. La table
+  // Breloque n'a pas encore de colonne catégorie (catégories pas encore décidées
+  // définitivement côté porteur de projet, voir CLAUDE.md) — à brancher plus tard.
+  const [categoriesActives, setCategoriesActives] = useState([]);
+  const [filtresOuverts, setFiltresOuverts] = useState(false);
   const [page, setPage] = useState(0);
   const [breloques, setBreloques] = useState([]);
   const [chargement, setChargement] = useState(true);
@@ -55,6 +61,32 @@ function BreloqueListPage() {
               {rang}
             </button>
           ))}
+        </div>
+
+        <button
+          type="button"
+          className="page-breloques__bouton-plus-filtres"
+          onClick={() => setFiltresOuverts((o) => !o)}
+          aria-expanded={filtresOuverts}
+        >
+          + de filtres {filtresOuverts ? '▲' : '▼'}
+        </button>
+
+        <div className={`page-breloques__plus-filtres ${filtresOuverts ? 'ouvert' : ''}`}>
+          <div className="page-breloques__plus-filtres-contenu">
+            <p className="page-breloques__categories-note">Filtres par catégorie (bientôt actifs)</p>
+            <div className="page-breloques__categories-grille">
+              {CATEGORIES_BRELOQUES.map((categorie) => (
+                <button
+                  key={categorie}
+                  className={categoriesActives.includes(categorie) ? 'actif' : ''}
+                  onClick={() => setCategoriesActives((actuelles) => basculerMulti(actuelles, categorie))}
+                >
+                  {categorie}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
