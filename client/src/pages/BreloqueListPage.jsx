@@ -1,9 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { listerBreloques } from '../api/breloques';
+import { equiperBreloqueAuto } from '../api/personnages';
+import { useAuth } from '../context/AuthContext';
 import { RANGS_MAITRISE } from '../constants/rangsMaitrise';
 import { CATEGORIES_BRELOQUES } from '../constants/categoriesBreloques';
 import BreloqueCard from '../components/BreloqueCard';
+import Toast from '../components/Toast';
 import './BreloqueListPage.css';
+
+const DUREE_TOAST_MS = 3000;
 
 const PAR_PAGE = 24;
 
@@ -24,6 +30,28 @@ function BreloqueListPage() {
   const [breloques, setBreloques] = useState([]);
   const [chargement, setChargement] = useState(true);
   const [erreur, setErreur] = useState(null);
+  const [erreurEquipement, setErreurEquipement] = useState(null);
+  const [toastVisible, setToastVisible] = useState(false);
+  const toastTimeout = useRef(null);
+
+  const { session } = useAuth();
+  const [searchParams] = useSearchParams();
+  const perso = searchParams.get('perso');
+  const modeEquipement = Boolean(perso && session);
+
+  useEffect(() => () => clearTimeout(toastTimeout.current), []);
+
+  async function equiper(breloqueId) {
+    setErreurEquipement(null);
+    try {
+      await equiperBreloqueAuto(session.token, perso, breloqueId);
+      setToastVisible(true);
+      clearTimeout(toastTimeout.current);
+      toastTimeout.current = setTimeout(() => setToastVisible(false), DUREE_TOAST_MS);
+    } catch {
+      setErreurEquipement("Impossible d'équiper cette breloque.");
+    }
+  }
 
   useEffect(() => {
     setPage(0);
@@ -91,12 +119,24 @@ function BreloqueListPage() {
       </div>
 
       {erreur && <p className="page-breloques__erreur">{erreur}</p>}
+      {erreurEquipement && <p className="page-breloques__erreur">{erreurEquipement}</p>}
       {chargement && <p>Chargement...</p>}
       {!chargement && !erreur && breloques.length === 0 && <p>Aucune breloque ne correspond à ta recherche.</p>}
 
       <div className="page-breloques__grille">
         {breloques.map((breloque) => (
-          <BreloqueCard key={breloque.id} breloque={breloque} />
+          <div key={breloque.id} className="page-breloques__carte">
+            <BreloqueCard breloque={breloque} />
+            {modeEquipement && (
+              <button
+                type="button"
+                className="page-breloques__bouton-equiper"
+                onClick={() => equiper(breloque.id)}
+              >
+                Équiper
+              </button>
+            )}
+          </div>
         ))}
       </div>
 
@@ -109,6 +149,8 @@ function BreloqueListPage() {
           Page suivante →
         </button>
       </div>
+
+      {modeEquipement && <Toast visible={toastVisible} lien={`/personnage/${perso}`} />}
     </div>
   );
 }

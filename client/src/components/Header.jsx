@@ -29,6 +29,11 @@ function Header() {
           <Link to="/sorts" className="entete__lien">
             Sorts
           </Link>
+          {session && (
+            <Link to="/personnage" className="entete__lien">
+              Personnage
+            </Link>
+          )}
         </div>
         {session ? (
           <div className="entete__compte">

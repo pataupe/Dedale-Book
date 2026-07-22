@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3001/api';
+const BASE_URL = '/api';
 
 export async function listerBreloques({ nom = '', rangs = [], limite = 24, offset = 0 } = {}) {
   const params = new URLSearchParams();

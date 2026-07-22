@@ -70,16 +70,21 @@
 }
 
 .entete__pseudo {
-  color: var(--texte);
-  font-size: 14px;
-  font-weight: 600;
+  color: var(--couleur-lumiere);
+  font-size: 17px;
+  font-weight: 700;
 }
 
 .entete__deconnexion {
   background: transparent;
-  border: 1px solid var(--bordure);
+  border: 1px solid var(--couleur-feu);
   border-radius: 20px;
   padding: 6px 14px;
-  color: var(--texte);
+  color: var(--couleur-feu);
   font-size: 14px;
+}
+
+.entete__deconnexion:hover {
+  background: var(--couleur-feu);
+  color: #fff;
 }

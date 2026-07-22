@@ -34,11 +34,11 @@ Dedalofus/
 - `schema.sql` (racine du repo) : script de création de la base `dedalofus` et de ses tables (Utilisateur avec `pseudo` unique inclus), à exécuter une seule fois
 - `server/config/db.js` : pool de connexions MySQL (`mysql2/promise`)
 - `server/logic/calcul.js` (+ `calcul.test.js`) : module de calcul de dégâts, 2 fonctions pures (Tâche 3)
-- `server/controllers/` + `server/routes/` : `cubesController`/`breloquesController`/`sortsController` (API lecture seule, Tâche 4) + `authController`/routes `auth` (inscription/connexion, Tâche 6)
-- `server/middleware/verifierToken.js` : middleware JWT, prêt à protéger les futures routes personnage/stuff (Tâche 7), pas encore branché sur aucune route
-- `client/src/pages/` : `HomePage`, `CubeListPage`/`CubeDetailPage`, `BreloqueListPage`, `SortListPage`, `ConnexionPage`, `InscriptionPage`, `PersonnagePage` (placeholder Tâche 7)
-- `client/src/components/` : `Header` (nav + état connexion), `CubeCard`, `BreloqueCard`, `SortCard`
-- `client/src/api/` : wrappers fetch (`cubes.js`, `breloques.js`, `sorts.js`, `auth.js`)
+- `server/controllers/` + `server/routes/` : `cubesController`/`breloquesController`/`sortsController` (API lecture seule, Tâche 4) + `authController`/routes `auth` (inscription/connexion, Tâche 6) + `personnagesController`/routes `personnages` (création/liste de personnages, Tâche 7 bout 1)
+- `server/middleware/verifierToken.js` : middleware JWT, pose `req.utilisateur` (`{ id, email, pseudo }`) — branché sur les routes `personnages` depuis la Tâche 7 (premier usage)
+- `client/src/pages/` : `HomePage`, `CubeListPage`/`CubeDetailPage`, `BreloqueListPage`, `SortListPage`, `ConnexionPage`, `InscriptionPage`, `PersonnagePage` (liste/création de personnages, nom seul — Tâche 7 bout 1, pas encore d'emplacements d'équipement)
+- `client/src/components/` : `Header` (nav + état connexion, lien "Personnage" affiché si connecté), `CubeCard`, `BreloqueCard`, `SortCard`
+- `client/src/api/` : wrappers fetch (`cubes.js`, `breloques.js`, `sorts.js`, `auth.js`, `personnages.js`)
 - `client/src/context/AuthContext.jsx` : session (token + utilisateur) persistée dans `localStorage`
 - `client/src/constants/` : `elements.js`, `rangs.js` (cubes), `elementsSorts.js`, `rangsMaitrise.js` (Novice/Expert/Maître α/Maître ẞ, partagé breloques+sorts), `statsCubes.js` (35 stats vérifiées en base)
 - `client/src/assets/logo.webp` : logo du site
@@ -57,7 +57,7 @@ Trois blocs indispensables :
 
 **Authentification** : site bénévole, pas de données bancaires. Un JWT simple + bcrypt suffit, pas de niveau de sécurité bancaire nécessaire.
 
-## Les 3 types d'équipements
+## Les 4 types d'équipements
 
 ### Cubes
 - Donnent des stats (ex: Intelligence, Agilité, Force, Chance, Vitalité, Puissance...)
@@ -71,6 +71,12 @@ Trois blocs indispensables :
 - Effet **purement informatif** dans l'immense majorité des cas (ex: "x1.2", "x1.3" affiché mais non calculé) — sert juste à indiquer au joueur qui consulte un stuff partagé quelle breloque équiper
 - **Exception unique** : une seule breloque a un vrai effet chiffré pris en compte dans le calcul → à traiter comme cas particulier (champ `is_calculated` ou équivalent)
 - Données dans `DEDALE BRELOQUES.csv` — 3 colonnes exactement : `Nom`, `Rang`, `Effet`. Ces 3 colonnes sont validées comme suffisantes, pas de nouvelle colonne nécessaire pour l'instant.
+
+### Breuvages
+- **Nouveau 4e type d'équipement**, décidé en Tâche 7 (n'existait pas dans les blocs MVP d'origine)
+- **3 emplacements** par personnage (colonne de droite sur la maquette `maquetteEquipementPerso.png`)
+- Semble avoir un rang/grade (icônes à étoiles sur la maquette), à confirmer avec la vraie donnée
+- **Aucune donnée disponible pour l'instant** — traité comme emplacements vides fictifs le temps que la data arrive (pas de référentiel ni de sélection réelle avant ça)
 
 ### Sorts
 - **9 sorts équipés** par personnage
@@ -138,7 +144,7 @@ Valeurs connues à ce jour (config `PANOPLIES` dans `calcul.js`, facilement modi
 | 6 | +250 Vita, +150 Agilité, +30 DO_AIR, +75 Puissance, +15 Dommages |
 | 7-9 | ⚠️ valeurs **fictives**, à corriger |
 
-**Terre, Eau, Feu : pas encore fournis** — à ajouter dans `PANOPLIES` (`calcul.js`) dès que connus.
+**Terre, Eau, Feu** : ⚠️ aucune vraie valeur fournie pour l'instant — en attendant, mêmes valeurs que Air à l'identique sur tous les paliers (2-9), juste la caractéristique et la stat de dommages direct adaptées à l'élément (Terre→Force/DO_TERRE, Eau→Chance/DO_EAU, Feu→Intelligence/DO_FEU). Entièrement fictif, à corriger dans `PANOPLIES` (`calcul.js`) dès que le porteur de projet fournit les vraies valeurs.
 
 (Une version à une seule fonction `calculerDegats(cubesEquipes, sortsEquipes)` avait été proposée puis corrigée — l'étape intermédiaire d'agrégation des stats est centrale et doit rester séparée.)
 
@@ -208,8 +214,8 @@ Index utiles à prévoir au minimum : `element`, `rang`/`evolution` sur `Cube` (
 4. **API Express pour exposer les équipements** ✅ FAIT (Jour 3) — routes 100% en français, cohérent avec le reste du code
 5. **Pages React liste + détail équipement** ✅ FAIT — voir "État d'avancement" ci-dessous
 6. **Authentification (inscription/connexion, bcrypt, JWT)** ✅ FAIT — voir "État d'avancement" ci-dessous
-7. **Création de personnage + emplacements d'équipement** ← PROCHAINE ÉTAPE
-8. Branchement du calculateur sur la fiche perso (onglet Sorts)
+7. **Création de personnage + emplacements d'équipement** ✅ FAIT — voir "État d'avancement" ci-dessous
+8. Branchement du calculateur sur la fiche perso (onglet Sorts) 🔄 EN COURS (stats affichées, calculateur de dégâts pas encore fait) — voir "État d'avancement" ci-dessous
 9. Sauvegarde automatique du stuff
 10. Partage par lien unique (`share_token`, route publique sans auth)
 11. Déploiement (hébergeur à choisir — doit supporter Node.js + Express + MySQL, **Vercel exclu** car pensé pour Next.js/serverless)
@@ -296,21 +302,73 @@ Règles d'enchaînement :
 - Google OAuth demandé puis **repoussé** après plus tard : complexité de config externe (Google Cloud, redirect URI) non justifiée pour le MVP d'un site bénévole
 - Repo GitHub : ancienne branche `master` (vieux prototype statique sans rapport, un seul commit) renommée en `archive` ; remote local mis à jour vers la nouvelle URL `pataupe/Dedalofus` (le repo avait été renommé côté GitHub, ancien nom `Dedale-Book`)
 
-### 🔜 Prochaine étape — Tâche 7
-Création de personnage + emplacements d'équipement (9 cubes, 7 breloques, 9 sorts), protégée par le token JWT (middleware `verifierToken.js` déjà prêt). Coder en **mobile-first** (décision prise en Tâche 5).
+### ✅ Tâche 7 terminée — Personnage, grille d'équipements, flux "Équiper"
+- **Décision de découpage** : Tâche 7 attaquée en 2 bouts plutôt que d'un coup.
+- **Nouveau 4e type d'équipement décidé** : les **Breuvages** (3 emplacements), en plus des cubes/breloques/sorts — voir section "Les 4 types d'équipements" ci-dessus. Toujours pas de data ni de table : 3 cases statiques non cliquables côté frontend, rien côté backend.
+- **Bout 1** : `POST`/`GET /api/personnages` (création + liste, `nom` seul), protégées par `verifierToken` (premier branchement réel du middleware) ; `PersonnagePage.jsx` remplace le placeholder.
+- **Bout 2** — la vraie grille d'équipement :
+  - `creerPersonnage` crée maintenant aussi l'`Equipement` associé + ses 25 lignes d'emplacements vides (9 `EquipementCube` + 9 `EquipementSort` + 7 `EquipementBreloque`, en bulk insert mysql2 `VALUES ?`) ; `lien_partage` généré via `crypto.randomBytes` dès la création (colonne `NOT NULL UNIQUE`, même si le partage lui-même n'est pas encore utilisé, Tâche 10)
+  - `GET /api/personnages/:id` renvoie la fiche complète (nom + les 25 emplacements avec l'item posé ou `null`), `PUT /api/personnages/:id/{cubes,sorts,breloques}/:emplacement` équipe un item (une seule requête `UPDATE ... JOIN Equipement`, pas de round-trip supplémentaire pour retrouver `equipement_id`)
+  - **Flux "Équiper" retenu** (à réutiliser pour tout futur type d'emplacement) : cliquer un emplacement **vide** sur la fiche perso navigue vers la vraie page liste du type concerné (`/cubes?perso=<id>&emplacement=<n>`, etc.) — pas de vue "picker" dédiée, on réutilise les pages liste existantes avec tous leurs filtres. Ces 3 pages liste détectent les query params `perso`/`emplacement` et affichent un bouton "Équiper" par carte (visible seulement si connecté) ; le clic appelle la route `PUT` puis redirige vers `/personnage/:id`.
+  - Nouvelle page `PersonnageDetailPage.jsx` (route `/personnage/:id`) : grille de 28 cases affichées à l'écran (les 25 réelles + les 3 breuvages statiques), nouveau composant partagé `EmplacementSlot.jsx` (case vide cliquable pointillée vs. case remplie, réutilisé pour les 4 types plutôt que de dupliquer la logique 28 fois)
+  - Après création d'un personnage, redirection automatique vers sa fiche (`/personnage/:id`) au lieu de rester sur la liste
+  - **Explicitement hors scope, repoussé à la Tâche 8** : les stats calculées du personnage (affichage sous la grille) et l'onglet "Sorts" avec le calculateur de dégâts — les deux ont besoin de pouvoir déjà équiper des cubes/sorts, donc logiquement après ce bout
+- **Bout 3** — polish visuel de la grille + modale de détail (retouches demandées après un premier retour visuel du porteur de projet, maquettes `MaquetteEquipementVide.jpg` et `maquetteCube.png`) :
+  - Layout corrigé : cubes (3×3) + sorts (3×3) + colonne des 3 breuvages côte à côte (le CSS des breuvages utilisait par erreur une grille à 3 colonnes au lieu d'une colonne à 3 lignes — repositionnés), breloques en rangée en dessous, tout centré et agrandi (slots 64px mobile / 80px desktop, contre 56px avant)
+  - `EmplacementSlot.jsx` : plus de "+" affiché dans les cases vides (juste un style de case creuse, bordure qui réagit au survol) ; les cases **remplies** sont maintenant aussi cliquables (avant : affichage seul)
+  - Cases cube équipé affichent `élément + numéro` (ex: "Air 3") plutôt que `nom` (qui vaut toujours littéralement "Cube", cf. bug connu Tâche 5) — seul affichage utile en attendant les vraies images (V1 sans images, cf. "Sourcing des images" ci-dessous)
+  - **Clic sur une case remplie → modale de détail**, nouveau composant générique réutilisable `Modal.jsx` (fond cliquable pour fermer, touche Échap, bouton ×) : réutilise directement `CubeCard`/`SortCard`/`BreloqueCard` (déjà construits Tâche 5) comme contenu, pas de nouveau composant de détail à écrire
+    - Sorts et breloques : la fiche perso (`GET /api/personnages/:id`) a été élargie pour inclure les colonnes manquantes (`cout_pa`/`description` pour les sorts, `effet` pour les breloques) — tout est déjà là, la modale s'ouvre instantanément
+    - Cubes : les stats ne sont **pas** incluses dans la fiche perso (évite de les charger pour 9 cubes à chaque chargement de page) — récupérées à la demande via l'endpoint existant `GET /api/cubes/:id` au clic, modale ouverte immédiatement puis mise à jour dès que les stats arrivent
+  - Breuvages : toujours aucune donnée/table, cases vides non cliquables inchangées — la demande de modale ne s'applique pas encore à ce type
+- **Bout 4** — bordures colorées par rang sur les cases équipées (indicateur visuel en attendant les vraies images) :
+  - Cubes (`client/src/constants/rangs.js`, `couleurRangCube`) : Commun = bronze, Rare = argent, Épique = or, Mythique = rouge écarlate, Éxalté = diamant (bleu glacé `#CFEFFF` + léger halo lumineux via `box-shadow`, pensé pour rester visuellement distinct du bleu-vert de l'élément Air `#7fd1c8`)
+  - Breloques et sorts (`client/src/constants/rangsMaitrise.js`, `couleurRangMaitrise`, échelle de rangs partagée) : Novice = bordure par défaut (rien de spécial), Expert = argent, Maître α/ẞ = or
+  - `s.rang_evolution` ajouté à la requête sorts de `GET /api/personnages/:id` (manquant jusqu'ici, nécessaire pour calculer la couleur de bordure)
+  - `EmplacementSlot.jsx` : nouvelles props `bordure`/`lueur`, bordure des cases remplies passée de 1px à 3px pour que la couleur de rang soit bien visible
+- **Bout 5** — contrainte "un seul exemplaire par cube" : un même cube (élément + numéro, ex: "Air 4") ne peut être équipé qu'à un seul emplacement à la fois, **même à un rang différent** (Air 4 Commun et Air 4 Mythique s'excluent mutuellement ; Air 4 et Feu 4 restent compatibles). Vérifié dans `equiperCube` (désormais une fonction autonome, plus besoin du helper générique `equiper` partagé avec sorts/breloques qui n'ont pas cette contrainte) : requête de conflit sur `EquipementCube JOIN Cube` scoped au personnage, `409 { erreur }` avec le nom de l'emplacement en conflit si trouvé. Message backend propagé tel quel jusqu'à l'utilisateur (`CubeListPage.jsx` affiche `err.message` au lieu d'un message générique).
+- **Bout 6** — déséquiper un item (aucune route backend à ajouter : `PUT .../:emplacement` acceptait déjà un id `null` pour vider l'emplacement, il manquait juste le déclencheur côté frontend) :
+  - Petite croix dans le coin haut-droit de chaque case remplie (`EmplacementSlot.jsx`, nouvelle prop `onDesequiper`, `stopPropagation` pour ne pas déclencher aussi l'ouverture de la modale) : déséquipement direct en un clic, sans passer par la modale
+  - Bouton rouge "Déséquiper" ajouté dans la modale de détail (les 3 types : cube/sort/breloque)
+  - `PersonnageDetailPage.jsx` : mise à jour de l'état local après un déséquipement réussi (pas de refetch complet de la fiche), fermeture automatique de la modale si l'item déséquipé y était affiché
+- **Bout 7** — petites retouches UX suite aux retours du porteur de projet :
+  - `Modal.jsx` : le scroll vertical est désormais isolé dans un conteneur interne (`.modale__corps`) séparé du conteneur externe qui porte le bouton × en débordement négatif — évitait une barre de défilement horizontale parasite (le débordement du bouton faisait passer `overflow-x` à `auto` sur tout le conteneur)
+  - `EmplacementSlot.css` : la petite croix de déséquipement n'est visible qu'au survol/focus de la case (`opacity` 0→1 via `:hover`/`:focus-within`), plus jamais affichée en permanence
+  - `PersonnagePage.css` : le lien de chaque personnage dans "Mes personnages" est maintenant `display: block` sur toute la zone du `<li>` (avant : seul le texte était cliquable, le padding autour ne réagissait pas)
+  - `Header.css` : pseudo agrandi (17px, gras, couleur accent dorée `--couleur-lumiere`) pour plus de présence une fois connecté ; bouton "Déconnexion" recoloré en rouge (`--couleur-feu`, même couleur que "Déséquiper") plutôt que neutre, cohérent avec les autres actions de sortie/suppression de l'appli
+  - `PersonnageDetailPage.jsx` : lien "← Retour à mes personnages" ajouté en haut de la fiche, vers `/personnage`
+- **Bout 8** — flux "Équiper" sans redirection automatique : cliquer "Équiper" sur `CubeListPage`/`BreloqueListPage`/`SortListPage` ne navigue plus tout de suite vers la fiche perso. À la place, nouveau composant partagé `Toast.jsx` (notification discrète en bas d'écran, transition slide up/down via une classe `visible` togglée en CSS, `position: fixed`) qui propose un lien "Voir ma fiche" et se ferme seule après 3s (`setTimeout` stocké dans un `useRef`, remis à zéro à chaque nouvel équipement pour ne pas empiler plusieurs toasts — un seul toast affiché à la fois, son minuteur redémarre). Permet d'équiper plusieurs items d'affilée depuis la même page liste sans revenir sur la fiche à chaque fois.
+  - **Bug découvert juste après** : rester sur la page liste et cliquer "Équiper" sur plusieurs cubes/sorts/breloques différents ré-équipait toujours le **même** emplacement (celui figé dans l'URL au moment du clic sur la case vide d'origine, `?perso=<id>&emplacement=<n>`) — un seul item au final au lieu de plusieurs. Corrigé en changeant le contrat de la route : `PUT /api/personnages/:id/{cubes,sorts,breloques}` (sans `:emplacement` dans l'URL) choisit désormais **automatiquement le premier emplacement libre** du bon type côté serveur (`trouverEmplacementLibre`, `SELECT ... WHERE <colonne>_id IS NULL ORDER BY emplacement LIMIT 1`) ; la contrainte "un seul exemplaire par cube" (Bout 5) reste vérifiée avant de chercher un emplacement libre. La route `PUT .../:emplacement` (avec emplacement précis) reste utilisée telle quelle, mais uniquement pour le **déséquipement** depuis la fiche perso, qui a besoin de cibler une case précise. Les liens des cases vides sur `PersonnageDetailPage.jsx` n'ont donc plus besoin du paramètre `emplacement` (juste `?perso=<id>`).
 
-Détail du travail à faire :
-- **Backend** : tables `Personnage`, `Equipement`, `EquipementCube`, `EquipementBreloque`, `EquipementSort` déjà créées en base depuis la Tâche 2 mais jamais encore utilisées par aucune route. Il faut : routes protégées (créer un personnage, créer un "stuff" avec ses emplacements vides), routes pour remplir un emplacement (associer un cube/breloque/sort à un emplacement).
-- **Frontend** : remplacer la page `/personnage` (placeholder actuel "Bientôt disponible") par la vraie fiche — liste des personnages du joueur + bouton "créer un personnage", fiche avec les emplacements vides, clic sur un emplacement vide → réutilise les listes déjà construites (Cubes/Breloques/Sorts, Tâche 5) pour choisir → retour sur la fiche remplie.
-- **Question encore ouverte (pas tranchée)** : démarrer par un premier bout simple et testable (juste la création de personnage, nom seul, sans équipement) puis itérer, ou construire personnage + emplacements + sélection d'un coup ? À décider en début de Tâche 7.
+### 🔄 Tâche 8 (bout 1 fait) — Stats calculées sous la grille
+- Le module `server/logic/calcul.js` (Tâche 3) n'était jusqu'ici appelé que par ses tests unitaires — jamais exposé par une route. `obtenirPersonnage` (`GET /api/personnages/:id`) calcule maintenant réellement `calculerStatsPersonnage` à partir des cubes équipés (stats batch-fetchées avec le même pattern `StatCube WHERE cube_id IN (...)` que `cubesController.listerCubes`) et ajoute le résultat dans la réponse (`{ ..., stats }`)
+- Nouveau composant `client/src/components/StatsPersonnage.jsx`, affiché sous la grille d'équipement sur `PersonnageDetailPage.jsx` : 5 blocs façon DofusBook (maquettes fournies par le porteur de projet) — Principal (Vitalité/PA/PM/PO/Invocation/Initiative/% Critique/Soin), Caractéristiques, Mobilité (Fuite/Tacle/Esquive/Retrait), Dommages, Résistances — toutes les stats affichées même à 0, config de libellés en dur dans le composant (les clés dérivées de `calcul.js` mélangent `_TOTAL`/`_TOTALE`, à respecter exactement)
+- **Pas de recalcul optimiste côté client** : les stats sont recalculées côté serveur à chaque `GET /api/personnages/:id`, donc un rafraîchissement de page suffit après avoir équipé/déséquipé un cube — pas de logique de calcul dupliquée en JS frontend
+- **Bout 2** — bonus de panoplie affichés sur la fiche perso :
+  - **Terre/Eau/Feu ajoutés à `PANOPLIES`** (`calcul.js`) : jusqu'ici seuls Lumière et Air avaient des valeurs. En l'absence de vraies données pour ces 3 familles, mêmes valeurs que Air à l'identique sur tous les paliers (2 à 9), juste la caractéristique et la stat de dommages direct adaptées (Terre→FORCE/DO_TERRE, Eau→CHANCE/DO_EAU, Feu→INTELLIGENCE/DO_FEU) — entièrement **fictif**, à corriger dès que le porteur de projet fournit les vraies valeurs. Les 5 familles ont donc maintenant une table de bonus.
+  - Nouvelle fonction exportée `calculerPanopliesActives(cubesEquipes)` (`calcul.js`) : renvoie le détail **par famille** (`{ famille, nombre, palier, bonus }[]`) des ensembles actifs, sans les fusionner — contrairement à `calculerBonusPanoplies` (utilisée pour le calcul des stats), qui reste inchangée mais est maintenant réécrite pour réutiliser `calculerPanopliesActives` en interne (pas de logique dupliquée). 4 nouveaux tests unitaires (33 au total, tous verts).
+  - `GET /api/personnages/:id` renvoie ce détail dans `{ ..., panoplies }`
+  - Nouveau composant `client/src/components/PanopliesPersonnage.jsx`, affiché sous `StatsPersonnage` : n'affiche qu'**un seul ensemble à la fois** ("Ensemble de Cubes Air (7)" + ses stats), pour éviter une page à rallonge quand plusieurs familles sont actives en même temps (ex: cubes Chaos comptant dans les 5 familles à la fois → jusqu'à 5 ensembles actifs simultanément). Cliquer sur le titre ouvre un menu déroulant listant les autres ensembles actifs ; en choisir un bascule l'affichage dessus. Ensemble par défaut = celui avec le plus de cubes comptés (Chaos inclus), départagé par un ordre fixe en cas d'égalité. Si un seul ensemble est actif, le titre redevient un simple texte non cliquable (pas de menu vide à ouvrir pour rien).
+- **Bout 3** — réorganisation Caractéristiques + colonne "Parcho" (maquette DofusBook fournie par le porteur de projet) :
+  - Bloc Principal : la ligne `VITALITE_TOTALE` s'appelle maintenant "PdV" (au lieu de "Vitalité") pour ne pas être confondue avec la nouvelle ligne "Vitalité" du bloc Caractéristiques (la stat `VITALITE` brute des cubes seule, sans le +1050 de base)
+  - Bloc Caractéristiques réordonné : Vitalité, Sagesse, Force, Intelligence, Chance, Agilité, puis Puissance à part (Puissance n'a **pas** de Parcho, confirmé sur la capture)
+  - **"Parcho"** : bonus de caractéristiques éditable par le joueur (façon scrolls), **persisté en base** (décision du porteur de projet, comme l'équipement) — 6 colonnes ajoutées à `Equipement` (`parcho_vitalite`, `parcho_sagesse`, `parcho_force`, `parcho_intelligence`, `parcho_chance`, `parcho_agilite`, toutes `INT NOT NULL DEFAULT 0`), migrées par script Node ponctuel (pas de client `mysql` en CLI sur la machine) et répercutées dans `schema.sql`
+  - `GET /api/personnages/:id` renvoie `parcho: { VITALITE, SAGESSE, FORCE, INTELLIGENCE, CHANCE, AGILITE }` ; nouvelle route `PUT /api/personnages/:id/parcho` (`sauvegarderParcho`) sauvegarde les 6 valeurs à la fois (entiers ≥ 0)
+  - `StatsPersonnage.jsx` : chaque ligne Caractéristiques (sauf Puissance) a maintenant une case éditable, total affiché = stat des cubes + Parcho ; 3 boutons "0"/"100"/"150" sous la colonne remplissent les 6 cases à la fois et sauvegardent immédiatement ; une case modifiée à la main sauvegarde au `onBlur`
+  - **Bug corrigé pendant le dev** : l'`onBlur` lisait `parchoLocal` (state React) au lieu de la valeur réelle du champ, capturée par une closure qui pouvait être en retard d'un render sur le `onChange` — corrigé en relisant `e.target.value` directement dans le handler `onBlur` plutôt que de faire confiance au state
+- **Bout 4** — le Parcho ne remontait pas dans les stats dérivées (PdV, Tacle, Fuite, Retrait/Esquive PA-PM, Initiative) : il ne servait qu'à l'affichage brut des 6 lignes Caractéristiques, sans influencer le reste du calcul. Corrigé à la source : `calculerStatsPersonnage(cubesEquipes, bonusParcho)` (`calcul.js`) prend maintenant un 2e paramètre optionnel, fusionné dans les stats brutes **avant** toute dérivation — exactement comme les bonus de panoplie, donc tout ce qui dépend de VITALITE/SAGESSE/FORCE/INTELLIGENCE/CHANCE/AGILITE en profite automatiquement, y compris l'Initiative (effet de bord logique, pas juste les stats explicitement demandées). 5 nouveaux tests unitaires (38 au total). `obtenirPersonnage` passe maintenant `parcho` en 2e argument. Le "dynamique" demandé reste **côté serveur** (pas de duplication des formules en JS) : `StatsPersonnage.jsx` republie la fiche perso (`onParchoSauvegarde`, callback vers `rafraichir()` dans `PersonnageDetailPage.jsx`) juste après chaque sauvegarde Parcho réussie (au blur ou au clic sur 0/100/150) — mise à jour quasi instantanée sans recharger la page, mais pas à chaque frappe.
+- **Bout 5** — retouche du menu déroulant des panoplies (maquette Dédale fournie par le porteur de projet) :
+  - `PanopliesPersonnage.jsx`/`.css` : le déclencheur ressemble maintenant à un vrai sélecteur (bordure, fond distinct, bouton flèche coloré `--couleur-lumiere` à droite qui pivote à l'ouverture), précédé d'un petit label "Bonus de panoplie :"
+  - **Bug de positionnement corrigé** : le menu déroulant est maintenant dans son propre conteneur `position: relative` (`.panoplies-personnage__selecteur`), séparé du reste du bloc — avant, il était positionné par rapport à toute la carte (titre + stats), donc `top: 100%` le plaçait sous les stats au lieu de sous le titre. Il s'ouvre maintenant juste sous le déclencheur et recouvre les stats en dessous (`position: absolute` + `z-index`), sans repousser la mise en page.
+- **Bout 6** — 45 sorts utilitaires masqués du site : sorts sans dégâts ni élément (ex: "Botte - Novice", "Aimantation - Novice" — nom se terminant par "- Novice", pas à confondre avec la colonne `rang_evolution`), hors sujet pour un calculateur de dégâts. Décision : ne pas les supprimer, juste les masquer — nouvelle colonne `Sort.visible` (`TINYINT(1) NOT NULL DEFAULT 1`, migrée par script Node ponctuel comme pour Parcho, et ajoutée à `schema.sql`), mise à `0` pour ces 45 lignes. `sortsController.listerSorts` filtre désormais toujours `WHERE visible = 1` (en plus des filtres existants) — 70 sorts visibles au lieu de 115. Filtre appliqué uniquement à la liste/recherche : la fiche perso (`obtenirPersonnage`) n'y touche pas, un sort déjà équipé continuerait de s'afficher normalement même s'il devenait invisible.
 
 ## Points encore en suspens
 
 - **Responsive mobile-first sur les pages déjà construites** (Tâche 5 : accueil, Cubes/Breloques/Sorts, Connexion/Inscription) : aucune media query pour l'instant, pas testé sur petit écran. La convention mobile-first ne s'applique qu'au code écrit *à partir de* la Tâche 7 — une passe dédiée reste à faire sur l'existant.
 - **Vulnérabilités npm (Dependabot)** : 9 signalées sur GitHub, dues au downgrade de Vite (8→5) et Vitest (4→2) pour compatibilité Node 18. Dépendances de développement uniquement (pas exposées en prod) — disparaîtront si le projet passe un jour à Node 20+.
 - **Hébergeur** : pas encore choisi (doit supporter Node + Express + MySQL)
-- **Bonus de panoplie Terre/Eau/Feu** : pas encore fournis (seuls Lumière et Air sont connus) — à ajouter dans `PANOPLIES` (`calcul.js`) dès que disponibles
-- **Paliers 5-9 (Lumière) et 7-9 (Air) des panoplies** : valeurs actuellement fictives en attendant les vraies (voir section "Stats dérivées et bonus de panoplie")
+- **Bonus de panoplie Terre/Eau/Feu** : valeurs actuellement fictives (copie de Air) en attendant que le porteur de projet fournisse les vraies — à corriger dans `PANOPLIES` (`calcul.js`)
+- **Paliers 5-9 (Lumière) et 7-9 (Air/Terre/Eau/Feu) des panoplies** : valeurs actuellement fictives en attendant les vraies (voir section "Stats dérivées et bonus de panoplie")
 - **Dommages critique et dommages poussée** : formules connues mais pas encore intégrées à `calculerDegats` (pas de modélisation du jet critique ni du nombre de cases de poussée pour l'instant) — pas urgent
 - **Sourcing des images** des équipements : prévu après le MVP
 - **Catégories de filtres pour les breloques** (Dégâts, Mobilité, Soin/Protection, Entrave, Bonus PA/PO, Bonus divers, Breloques boss) : catégories **pas encore décidées définitivement**, et de nouvelles breloques seront ajoutées plus tard. Reporté à plus tard dans le développement plutôt que de classer les 116 breloques actuelles maintenant (risque de tout refaire).

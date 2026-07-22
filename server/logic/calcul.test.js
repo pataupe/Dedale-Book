@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-const { calculerStatsPersonnage, calculerDegats } = require('./calcul');
+const { calculerStatsPersonnage, calculerDegats, calculerPanopliesActives } = require('./calcul');
 
 // Petit utilitaire pour fabriquer un "cube équipé" avec juste les stats voulues
 // (et éventuellement son élément, utile pour les tests de bonus de panoplie).
@@ -133,6 +133,83 @@ describe('calculerStatsPersonnage — bonus de panoplie', () => {
     ]);
     expect(stats.VITALITE_TOTALE).toBe(1050 + 50);
     expect(stats.PM_TOTAL).toBe(3 + 1);
+  });
+
+  it('Terre/Eau/Feu ont aussi un bonus de panoplie (copie de Air en attendant les vraies valeurs)', () => {
+    const terre = calculerStatsPersonnage([cube({}, 'Terre'), cube({}, 'Terre')]);
+    expect(terre.VITALITE_TOTALE).toBe(1050 + 50);
+    expect(terre.FORCE).toBe(50);
+    expect(terre.DO_TERRE).toBe(10);
+
+    const eau = calculerStatsPersonnage([cube({}, 'Eau'), cube({}, 'Eau')]);
+    expect(eau.CHANCE).toBe(50);
+    expect(eau.DO_EAU).toBe(10);
+
+    const feu = calculerStatsPersonnage([cube({}, 'Feu'), cube({}, 'Feu')]);
+    expect(feu.INTELLIGENCE).toBe(50);
+    expect(feu.DO_FEU).toBe(10);
+  });
+});
+
+describe('calculerStatsPersonnage — bonus "Parcho"', () => {
+  it('Parcho Vitalité impacte le PdV (VITALITE_TOTALE)', () => {
+    const stats = calculerStatsPersonnage([], { VITALITE: 200 });
+    expect(stats.VITALITE_TOTALE).toBe(1050 + 200);
+  });
+
+  it('Parcho Agilité impacte le Tacle, Parcho Chance impacte la Fuite', () => {
+    const stats = calculerStatsPersonnage([], { AGILITE: 100, CHANCE: 100 });
+    expect(stats.TACLE_TOTAL).toBe(10);
+    expect(stats.FUITE_TOTALE).toBe(10);
+  });
+
+  it('Parcho Sagesse impacte Retrait PA/PM et Esquive PA/PM', () => {
+    const stats = calculerStatsPersonnage([], { SAGESSE: 100 });
+    expect(stats.RETRAIT_PA_TOTAL).toBe(10);
+    expect(stats.RETRAIT_PM_TOTAL).toBe(10);
+    expect(stats.ESQUIVE_PA_TOTALE).toBe(10);
+    expect(stats.ESQUIVE_PM_TOTALE).toBe(10);
+  });
+
+  it('Parcho Force/Intelligence/Chance/Agilité impacte aussi l\'Initiative', () => {
+    const stats = calculerStatsPersonnage([], { FORCE: 10, INTELLIGENCE: 20, CHANCE: 30, AGILITE: 40 });
+    expect(stats.INITIATIVE_TOTALE).toBe(10 + 20 + 30 + 40);
+  });
+
+  it('Parcho se cumule avec les bonus de cubes/panoplie, pas de Parcho par défaut', () => {
+    const stats = calculerStatsPersonnage([cube({ AGILITE: 50 }, 'Air'), cube({}, 'Air')], { AGILITE: 100 });
+    // palier 2 Air (+50 agi) + 50 (cube) + 100 (parcho) = 200
+    expect(stats.AGILITE).toBe(200);
+    expect(calculerStatsPersonnage([]).VITALITE_TOTALE).toBe(1050); // sans 2e argument, aucun changement
+  });
+});
+
+describe('calculerPanopliesActives', () => {
+  it('tableau vide si aucune famille n\'a 2 cubes ou plus', () => {
+    expect(calculerPanopliesActives([cube({}, 'Air')])).toEqual([]);
+  });
+
+  it('une entrée par famille active, non fusionnées entre elles', () => {
+    const actives = calculerPanopliesActives([
+      cube({}, 'Air'), cube({}, 'Air'),
+      cube({}, 'Lumière'), cube({}, 'Lumière'), cube({}, 'Lumière'),
+    ]);
+    expect(actives).toHaveLength(2);
+
+    const air = actives.find((a) => a.famille === 'Air');
+    expect(air.nombre).toBe(2);
+    expect(air.palier).toBe(2);
+    expect(air.bonus).toEqual({ VITALITE: 50, AGILITE: 50, DO_AIR: 10 });
+
+    const lumiere = actives.find((a) => a.famille === 'Lumière');
+    expect(lumiere.palier).toBe(3);
+    expect(lumiere.bonus).toEqual({ PM: 1, PA: 1 });
+  });
+
+  it('un cube Chaos compte dans les 5 familles à la fois', () => {
+    const actives = calculerPanopliesActives([cube({}, 'Air'), cube({}, 'Chaos')]);
+    expect(actives).toHaveLength(1); // Air seul atteint 2, les autres familles restent à 1
+    expect(actives[0].famille).toBe('Air');
   });
 });
 

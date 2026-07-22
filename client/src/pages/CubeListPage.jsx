@@ -1,11 +1,16 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { listerCubes } from '../api/cubes';
+import { equiperCubeAuto } from '../api/personnages';
+import { useAuth } from '../context/AuthContext';
 import { ELEMENTS } from '../constants/elements';
 import { RANGS } from '../constants/rangs';
 import { STATS_CUBES } from '../constants/statsCubes';
 import CubeCard from '../components/CubeCard';
+import Toast from '../components/Toast';
 import './CubeListPage.css';
+
+const DUREE_TOAST_MS = 3000;
 
 const PAR_PAGE = 24;
 
@@ -28,6 +33,28 @@ function CubeListPage() {
   const [cubes, setCubes] = useState([]);
   const [chargement, setChargement] = useState(true);
   const [erreur, setErreur] = useState(null);
+  const [erreurEquipement, setErreurEquipement] = useState(null);
+  const [toastVisible, setToastVisible] = useState(false);
+  const toastTimeout = useRef(null);
+
+  const { session } = useAuth();
+  const [searchParams] = useSearchParams();
+  const perso = searchParams.get('perso');
+  const modeEquipement = Boolean(perso && session);
+
+  useEffect(() => () => clearTimeout(toastTimeout.current), []);
+
+  async function equiper(cubeId) {
+    setErreurEquipement(null);
+    try {
+      await equiperCubeAuto(session.token, perso, cubeId);
+      setToastVisible(true);
+      clearTimeout(toastTimeout.current);
+      toastTimeout.current = setTimeout(() => setToastVisible(false), DUREE_TOAST_MS);
+    } catch (err) {
+      setErreurEquipement(err.message);
+    }
+  }
 
   // On revient à la page 0 dès que la recherche ou un filtre change.
   useEffect(() => {
@@ -122,15 +149,23 @@ function CubeListPage() {
       </div>
 
       {erreur && <p className="page-cubes__erreur">{erreur}</p>}
+      {erreurEquipement && <p className="page-cubes__erreur">{erreurEquipement}</p>}
       {chargement && <p>Chargement...</p>}
 
       {!chargement && !erreur && cubes.length === 0 && <p>Aucun cube ne correspond à ta recherche.</p>}
 
       <div className="page-cubes__grille">
         {cubes.map((cube) => (
-          <Link key={cube.id} to={`/cubes/${cube.id}`}>
-            <CubeCard cube={cube} />
-          </Link>
+          <div key={cube.id} className="page-cubes__carte">
+            <Link to={`/cubes/${cube.id}`}>
+              <CubeCard cube={cube} />
+            </Link>
+            {modeEquipement && (
+              <button type="button" className="page-cubes__bouton-equiper" onClick={() => equiper(cube.id)}>
+                Équiper
+              </button>
+            )}
+          </div>
         ))}
       </div>
 
@@ -143,6 +178,8 @@ function CubeListPage() {
           Page suivante →
         </button>
       </div>
+
+      {modeEquipement && <Toast visible={toastVisible} lien={`/personnage/${perso}`} />}
     </div>
   );
 }

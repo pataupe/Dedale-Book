@@ -22,7 +22,7 @@ async function listerSorts(req, res) {
   const rangs = parserListe(req.query.rangs);
   const { limite, offset } = parserPagination(req.query);
 
-  const conditions = [];
+  const conditions = ['visible = 1'];
   const params = [];
 
   if (nom) {

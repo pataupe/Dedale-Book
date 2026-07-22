@@ -1,0 +1,122 @@
+.panoplies-personnage {
+  width: 100%;
+  max-width: 500px;
+  margin-top: 12px;
+  background: var(--bg-carte);
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.panoplies-personnage__label {
+  margin: 0 0 6px;
+  font-size: 13px;
+  color: var(--texte-attenue);
+}
+
+/* Conteneur de taille réduite (pas toute la carte) : le menu se positionne par
+   rapport à lui, donc il flotte juste sous le déclencheur et recouvre les stats
+   en dessous plutôt que de pousser tout le bloc vers le bas. */
+.panoplies-personnage__selecteur {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.panoplies-personnage__declencheur {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--bordure);
+  border-radius: 6px;
+  padding: 8px 8px 8px 12px;
+  color: var(--texte);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.panoplies-personnage__declencheur--seul {
+  cursor: default;
+  color: var(--texte-attenue);
+}
+
+.panoplies-personnage__fleche {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 24px;
+  background: var(--couleur-lumiere);
+  color: #1a1a1a;
+  border-radius: 4px;
+  font-size: 10px;
+  transition: transform 0.15s ease;
+}
+
+.panoplies-personnage__fleche--ouvert {
+  transform: rotate(180deg);
+}
+
+.panoplies-personnage__menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  background: var(--bg);
+  border: 1px solid var(--bordure);
+  border-radius: 6px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.panoplies-personnage__menu li + li {
+  border-top: 1px solid var(--bordure);
+}
+
+.panoplies-personnage__menu button {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  background: none;
+  color: var(--texte);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.panoplies-personnage__menu button:hover {
+  background: var(--bg-carte-survol);
+  color: var(--couleur-lumiere);
+}
+
+.panoplies-personnage__stats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--texte);
+}
+
+@media (min-width: 600px) {
+  .panoplies-personnage {
+    max-width: 700px;
+  }
+
+  .panoplies-personnage__stats {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 24px;
+  }
+}

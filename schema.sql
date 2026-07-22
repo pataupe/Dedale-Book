@@ -92,6 +92,9 @@ CREATE TABLE Sort (
   degats_critique_min INT NULL,
   degats_critique_max INT NULL,
   chance_critique TINYINT UNSIGNED NULL,   -- pourcentage entier (0 à 100), ex: 15 pour 15%
+  -- Sorts utilitaires sans dégâts (ex: "Botte - Novice", "Aimantation - Novice") : hors
+  -- sujet pour un calculateur de dégâts, masqués du site mais conservés en base.
+  visible TINYINT(1) NOT NULL DEFAULT 1,
   INDEX idx_sort_element (element),
   INDEX idx_sort_rang_evolution (rang_evolution)
 ) ENGINE=InnoDB;
@@ -105,6 +108,14 @@ CREATE TABLE Equipement (
   personnage_id INT NOT NULL,
   lien_partage VARCHAR(64) NOT NULL UNIQUE,
   mis_a_jour_le DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  -- "Parcho" : bonus de caractéristiques éditable par le joueur (façon scrolls),
+  -- affiché sur la fiche perso en plus des stats apportées par les cubes.
+  parcho_vitalite INT NOT NULL DEFAULT 0,
+  parcho_sagesse INT NOT NULL DEFAULT 0,
+  parcho_force INT NOT NULL DEFAULT 0,
+  parcho_intelligence INT NOT NULL DEFAULT 0,
+  parcho_chance INT NOT NULL DEFAULT 0,
+  parcho_agilite INT NOT NULL DEFAULT 0,
   FOREIGN KEY (personnage_id) REFERENCES Personnage(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 

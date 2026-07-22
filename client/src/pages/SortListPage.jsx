@@ -1,9 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { listerSorts } from '../api/sorts';
+import { equiperSortAuto } from '../api/personnages';
+import { useAuth } from '../context/AuthContext';
 import { ELEMENTS_SORTS } from '../constants/elementsSorts';
 import { RANGS_MAITRISE } from '../constants/rangsMaitrise';
 import SortCard from '../components/SortCard';
+import Toast from '../components/Toast';
 import './SortListPage.css';
+
+const DUREE_TOAST_MS = 3000;
 
 const PAR_PAGE = 24;
 
@@ -21,6 +27,28 @@ function SortListPage() {
   const [sorts, setSorts] = useState([]);
   const [chargement, setChargement] = useState(true);
   const [erreur, setErreur] = useState(null);
+  const [erreurEquipement, setErreurEquipement] = useState(null);
+  const [toastVisible, setToastVisible] = useState(false);
+  const toastTimeout = useRef(null);
+
+  const { session } = useAuth();
+  const [searchParams] = useSearchParams();
+  const perso = searchParams.get('perso');
+  const modeEquipement = Boolean(perso && session);
+
+  useEffect(() => () => clearTimeout(toastTimeout.current), []);
+
+  async function equiper(sortId) {
+    setErreurEquipement(null);
+    try {
+      await equiperSortAuto(session.token, perso, sortId);
+      setToastVisible(true);
+      clearTimeout(toastTimeout.current);
+      toastTimeout.current = setTimeout(() => setToastVisible(false), DUREE_TOAST_MS);
+    } catch {
+      setErreurEquipement("Impossible d'équiper ce sort.");
+    }
+  }
 
   useEffect(() => {
     setPage(0);
@@ -80,12 +108,20 @@ function SortListPage() {
       </div>
 
       {erreur && <p className="page-sorts__erreur">{erreur}</p>}
+      {erreurEquipement && <p className="page-sorts__erreur">{erreurEquipement}</p>}
       {chargement && <p>Chargement...</p>}
       {!chargement && !erreur && sorts.length === 0 && <p>Aucun sort ne correspond à ta recherche.</p>}
 
       <div className="page-sorts__grille">
         {sorts.map((sort) => (
-          <SortCard key={sort.id} sort={sort} />
+          <div key={sort.id} className="page-sorts__carte">
+            <SortCard sort={sort} />
+            {modeEquipement && (
+              <button type="button" className="page-sorts__bouton-equiper" onClick={() => equiper(sort.id)}>
+                Équiper
+              </button>
+            )}
+          </div>
         ))}
       </div>
 
@@ -98,6 +134,8 @@ function SortListPage() {
           Page suivante →
         </button>
       </div>
+
+      {modeEquipement && <Toast visible={toastVisible} lien={`/personnage/${perso}`} />}
     </div>
   );
 }

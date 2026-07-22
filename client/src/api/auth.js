@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3001/api';
+const BASE_URL = '/api';
 
 async function appelAuth(chemin, corps) {
   const reponse = await fetch(`${BASE_URL}/auth/${chemin}`, {

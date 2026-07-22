@@ -8,6 +8,7 @@ import SortListPage from './pages/SortListPage';
 import ConnexionPage from './pages/ConnexionPage';
 import InscriptionPage from './pages/InscriptionPage';
 import PersonnagePage from './pages/PersonnagePage';
+import PersonnageDetailPage from './pages/PersonnageDetailPage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/connexion" element={<ConnexionPage />} />
         <Route path="/inscription" element={<InscriptionPage />} />
         <Route path="/personnage" element={<PersonnagePage />} />
+        <Route path="/personnage/:id" element={<PersonnageDetailPage />} />
       </Routes>
     </>
   );

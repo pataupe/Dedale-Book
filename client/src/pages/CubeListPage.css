@@ -126,6 +126,21 @@
   margin-bottom: 24px;
 }
 
+.page-cubes__carte {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.page-cubes__bouton-equiper {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  background: var(--couleur-lumiere);
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
 .page-cubes__pagination {
   display: flex;
   align-items: center;

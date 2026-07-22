@@ -114,6 +114,21 @@
   margin-bottom: 24px;
 }
 
+.page-breloques__carte {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.page-breloques__bouton-equiper {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  background: var(--couleur-lumiere);
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
 .page-breloques__pagination {
   display: flex;
   align-items: center;

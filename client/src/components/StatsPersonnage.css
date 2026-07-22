@@ -1,0 +1,106 @@
+.stats-personnage {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 24px;
+}
+
+.stats-personnage__bloc {
+  background: var(--bg-carte);
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.stats-personnage__titre {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--texte-attenue);
+}
+
+.stats-personnage__liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--texte);
+}
+
+.stats-personnage__carac-entetes {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--texte-attenue);
+  padding: 0 0 4px;
+}
+
+.stats-personnage__carac-ligne {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
+  font-size: 14px;
+  color: var(--texte);
+}
+
+.stats-personnage__carac-parcho {
+  width: 64px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--bordure);
+  background: var(--bg);
+  color: var(--texte);
+  font-size: 14px;
+  text-align: right;
+}
+
+.stats-personnage__carac-boutons {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.stats-personnage__carac-boutons button {
+  flex: 1;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid var(--bordure);
+  background: var(--bg-carte-survol);
+  color: var(--texte);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.stats-personnage__carac-boutons button:hover {
+  background: var(--couleur-lumiere);
+  color: #1a1a1a;
+}
+
+.stats-personnage__carac-puissance {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--texte);
+}
+
+.stats-personnage__erreur {
+  color: var(--couleur-feu);
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+
+@media (min-width: 600px) {
+  .stats-personnage {
+    max-width: 700px;
+  }
+
+  .stats-personnage__liste {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 24px;
+  }
+}
