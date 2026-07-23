@@ -1,0 +1,11 @@
+.onglet-sorts__grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.onglet-sorts__vide {
+  color: var(--texte-attenue);
+}

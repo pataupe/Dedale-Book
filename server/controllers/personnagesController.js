@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const pool = require('../config/db');
-const { calculerStatsPersonnage, calculerPanopliesActives } = require('../logic/calcul');
+const { calculerStatsPersonnage, calculerPanopliesActives, calculerDegats } = require('../logic/calcul');
 
 const NOM_MAX = 100;
 
@@ -78,7 +78,7 @@ async function obtenirPersonnage(req, res) {
     [personnage.id]
   );
   const [sorts] = await pool.query(
-    `SELECT es.emplacement, s.id, s.nom, s.element, s.degats_min, s.degats_max, s.cout_pa, s.description, s.rang_evolution
+    `SELECT es.emplacement, s.*
      FROM EquipementSort es
      JOIN Equipement e ON e.id = es.equipement_id
      LEFT JOIN Sort s ON s.id = es.sort_id
@@ -130,19 +130,33 @@ async function obtenirPersonnage(req, res) {
   const statsPersonnage = calculerStatsPersonnage(cubesEquipesPourCalcul, parcho);
   const panoplies = calculerPanopliesActives(cubesEquipesPourCalcul);
 
+  const sortsEquipesPourCalcul = sorts
+    .filter((s) => s.id)
+    .map((s) => ({
+      id: s.id,
+      degatsMin: s.degats_min,
+      degatsMax: s.degats_max,
+      element: s.element,
+      degatsCritiqueMin: s.degats_critique_min,
+      degatsCritiqueMax: s.degats_critique_max,
+      chanceCritique: s.chance_critique,
+    }));
+  const degats = calculerDegats(statsPersonnage, sortsEquipesPourCalcul);
+
   res.json({
     id: personnage.id,
     nom: personnage.nom,
     stats: statsPersonnage,
     panoplies,
     parcho,
+    degats,
     cubes: cubes.map(({ emplacement, id, nom, element, rang, numero }) => ({
       emplacement,
       cube: id ? { id, nom, element, rang, numero } : null,
     })),
-    sorts: sorts.map(({ emplacement, id, nom, element, degats_min, degats_max, cout_pa, description, rang_evolution }) => ({
+    sorts: sorts.map(({ emplacement, ...sort }) => ({
       emplacement,
-      sort: id ? { id, nom, element, degats_min, degats_max, cout_pa, description, rang_evolution } : null,
+      sort: sort.id ? sort : null,
     })),
     breloques: breloques.map(({ emplacement, id, nom, rang, effet }) => ({
       emplacement,

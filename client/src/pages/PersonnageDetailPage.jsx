@@ -9,6 +9,7 @@ import { couleurRangMaitrise } from '../constants/rangsMaitrise';
 import EmplacementSlot from '../components/EmplacementSlot';
 import StatsPersonnage from '../components/StatsPersonnage';
 import PanopliesPersonnage from '../components/PanopliesPersonnage';
+import OngletSorts from '../components/OngletSorts';
 import Modal from '../components/Modal';
 import CubeCard from '../components/CubeCard';
 import SortCard from '../components/SortCard';
@@ -32,6 +33,7 @@ function PersonnageDetailPage() {
   const [erreur, setErreur] = useState(null);
   const [erreurAction, setErreurAction] = useState(null);
   const [modale, setModale] = useState(null);
+  const [ongletActif, setOngletActif] = useState('equipement');
 
   useEffect(() => {
     if (!session) navigate('/connexion', { replace: true });
@@ -91,68 +93,91 @@ function PersonnageDetailPage() {
       <h1>{personnage.nom}</h1>
       {erreurAction && <p className="page-personnage-detail__erreur">{erreurAction}</p>}
 
-      <div className="page-personnage-detail__stuff">
-        <div className="page-personnage-detail__grille">
-          <div className="page-personnage-detail__section">
-            {personnage.cubes.map(({ emplacement, cube }) => (
-              <EmplacementSlot
-                key={emplacement}
-                vide={!cube}
-                libelle={cube ? `${cube.element} ${cube.numero}` : null}
-                couleur={cube ? couleurElement(cube.element) : null}
-                bordure={cube ? couleurRangCube(cube.rang) : null}
-                lueur={cube ? lueurRangCube(cube.rang) : null}
-                lien={`/cubes?perso=${id}`}
-                onClick={cube ? () => ouvrirCube(cube, emplacement) : undefined}
-                onDesequiper={cube ? () => desequiper('cube', emplacement) : undefined}
-              />
-            ))}
-          </div>
-
-          <div className="page-personnage-detail__section">
-            {personnage.sorts.map(({ emplacement, sort }) => (
-              <EmplacementSlot
-                key={emplacement}
-                vide={!sort}
-                libelle={sort?.nom}
-                bordure={sort ? couleurRangMaitrise(sort.rang_evolution) : null}
-                lien={`/sorts?perso=${id}`}
-                onClick={sort ? () => setModale({ type: 'sort', data: sort, emplacement }) : undefined}
-                onDesequiper={sort ? () => desequiper('sort', emplacement) : undefined}
-              />
-            ))}
-          </div>
-
-          <div className="page-personnage-detail__breuvages">
-            {BREUVAGES_VIDES.map((n) => (
-              <EmplacementSlot key={n} vide />
-            ))}
-          </div>
-        </div>
-
-        <div className="page-personnage-detail__breloques">
-          {personnage.breloques.map(({ emplacement, breloque }) => (
-            <EmplacementSlot
-              key={emplacement}
-              vide={!breloque}
-              libelle={breloque?.nom}
-              bordure={breloque ? couleurRangMaitrise(breloque.rang) : null}
-              lien={`/breloques?perso=${id}`}
-              onClick={breloque ? () => setModale({ type: 'breloque', data: breloque, emplacement }) : undefined}
-              onDesequiper={breloque ? () => desequiper('breloque', emplacement) : undefined}
-            />
-          ))}
-        </div>
+      <div className="page-personnage-detail__onglets">
+        <button
+          type="button"
+          className={ongletActif === 'equipement' ? 'actif' : ''}
+          onClick={() => setOngletActif('equipement')}
+        >
+          Équipement
+        </button>
+        <button
+          type="button"
+          className={ongletActif === 'sorts' ? 'actif' : ''}
+          onClick={() => setOngletActif('sorts')}
+        >
+          Sorts
+        </button>
       </div>
 
-      <StatsPersonnage
-        stats={personnage.stats}
-        parcho={personnage.parcho}
-        token={session.token}
-        personnageId={id}
-        onParchoSauvegarde={rafraichir}
-      />
-      <PanopliesPersonnage panoplies={personnage.panoplies} />
+      {ongletActif === 'sorts' ? (
+        <OngletSorts personnage={personnage} />
+      ) : (
+        <>
+          <div className="page-personnage-detail__stuff">
+            <div className="page-personnage-detail__grille">
+              <div className="page-personnage-detail__section">
+                {personnage.cubes.map(({ emplacement, cube }) => (
+                  <EmplacementSlot
+                    key={emplacement}
+                    vide={!cube}
+                    libelle={cube ? `${cube.element} ${cube.numero}` : null}
+                    couleur={cube ? couleurElement(cube.element) : null}
+                    bordure={cube ? couleurRangCube(cube.rang) : null}
+                    lueur={cube ? lueurRangCube(cube.rang) : null}
+                    lien={`/cubes?perso=${id}`}
+                    onClick={cube ? () => ouvrirCube(cube, emplacement) : undefined}
+                    onDesequiper={cube ? () => desequiper('cube', emplacement) : undefined}
+                  />
+                ))}
+              </div>
+
+              <div className="page-personnage-detail__section">
+                {personnage.sorts.map(({ emplacement, sort }) => (
+                  <EmplacementSlot
+                    key={emplacement}
+                    vide={!sort}
+                    libelle={sort?.nom}
+                    bordure={sort ? couleurRangMaitrise(sort.rang_evolution) : null}
+                    lien={`/sorts?perso=${id}`}
+                    onClick={sort ? () => setModale({ type: 'sort', data: sort, emplacement }) : undefined}
+                    onDesequiper={sort ? () => desequiper('sort', emplacement) : undefined}
+                  />
+                ))}
+              </div>
+
+              <div className="page-personnage-detail__breuvages">
+                {BREUVAGES_VIDES.map((n) => (
+                  <EmplacementSlot key={n} vide />
+                ))}
+              </div>
+            </div>
+
+            <div className="page-personnage-detail__breloques">
+              {personnage.breloques.map(({ emplacement, breloque }) => (
+                <EmplacementSlot
+                  key={emplacement}
+                  vide={!breloque}
+                  libelle={breloque?.nom}
+                  bordure={breloque ? couleurRangMaitrise(breloque.rang) : null}
+                  lien={`/breloques?perso=${id}`}
+                  onClick={breloque ? () => setModale({ type: 'breloque', data: breloque, emplacement }) : undefined}
+                  onDesequiper={breloque ? () => desequiper('breloque', emplacement) : undefined}
+                />
+              ))}
+            </div>
+          </div>
+
+          <StatsPersonnage
+            stats={personnage.stats}
+            parcho={personnage.parcho}
+            token={session.token}
+            personnageId={id}
+            onParchoSauvegarde={rafraichir}
+          />
+          <PanopliesPersonnage panoplies={personnage.panoplies} />
+        </>
+      )}
 
       {modale && (
         <Modal onClose={() => setModale(null)}>

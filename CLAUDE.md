@@ -118,9 +118,10 @@ Au-delà des stats brutes sommées telles quelles depuis les cubes, certaines st
 - **Retrait PA / Retrait PM** = 1 par tranche entière de 10 Sagesse (troncature). Pas de stat cube équivalente ; seules les **breloques** pourront l'augmenter (non géré pour l'instant, calcul limité aux cubes).
 - **Esquive PA / Esquive PM** = même palier Sagesse (10 → 1) **+ bonus direct des cubes** (stat `ESQUIVE_PA`/`ESQUIVE_PM`, confirmée présente sur certains cubes) — contrairement au Retrait, les cubes peuvent bien booster l'Esquive.
 - **Dommages élémentaires affichés** (Terre/Eau/Feu/Air) = stat `DOMMAGES` (globale, jamais affichée seule) + `DO_<ELEMENT>` (propre à l'élément)
-- **Dommages critique** (`DO_CRIT`) : s'ajoute aux dommages uniquement sur un coup critique (hors crit, aucun effet). **Pas encore intégré à `calculerDegats`** (qui ne modélise pas encore les jets critiques) — valeur brute disponible dans les stats, calcul du coup critique lui-même à faire plus tard.
+- **Dommages critique du sort** (`degats_critique_min`/`degats_critique_max` sur `Sort`, distinct de la stat cube `DO_CRIT`) : intégré à `calculerDegats` (Tâche 8) — même formule `ax+b` que les dégâts normaux, appliquée à la plage critique du sort. Affiché sur l'onglet Sorts de la fiche perso.
+- **`DO_CRIT`** (stat cube, bonus de dommages qui ne s'applique que **si** un coup critique survient) : **toujours pas intégré** — `calculerDegats` calcule la plage de dégâts critiques du sort mais ne simule pas le jet de dé lui-même (survient ou non), donc ce bonus n'est pas encore ajouté au résultat. Valeur brute disponible dans les stats.
 - **Dommages poussée** (`DO_POU`) : formule `(132 + DO_POU) / 4 × NombreDeCasesPoussées` — **pas implémenté**, le nombre de cases de poussée n'est pour l'instant que du texte libre dans les données sorts. Pas urgent (dixit porteur de projet).
-- **Critique** (`%_COUP_CRITIQUE`) : base 0 + somme des cubes. Le % final d'un sort = `%_COUP_CRITIQUE` du sort + celui du personnage. **Pas encore intégré à `calculerDegats`**.
+- **Critique** (`%_COUP_CRITIQUE`) : base 0 + somme des cubes. Le % final d'un sort (`chanceCritiqueTotal`) = `chance_critique` du sort + `%_COUP_CRITIQUE` du personnage — intégré à `calculerDegats` (Tâche 8), affiché sur l'onglet Sorts.
 
 ### Bonus de panoplie
 
@@ -215,7 +216,7 @@ Index utiles à prévoir au minimum : `element`, `rang`/`evolution` sur `Cube` (
 5. **Pages React liste + détail équipement** ✅ FAIT — voir "État d'avancement" ci-dessous
 6. **Authentification (inscription/connexion, bcrypt, JWT)** ✅ FAIT — voir "État d'avancement" ci-dessous
 7. **Création de personnage + emplacements d'équipement** ✅ FAIT — voir "État d'avancement" ci-dessous
-8. Branchement du calculateur sur la fiche perso (onglet Sorts) 🔄 EN COURS (stats affichées, calculateur de dégâts pas encore fait) — voir "État d'avancement" ci-dessous
+8. **Branchement du calculateur sur la fiche perso (onglet Sorts)** ✅ FAIT — voir "État d'avancement" ci-dessous
 9. Sauvegarde automatique du stuff
 10. Partage par lien unique (`share_token`, route publique sans auth)
 11. Déploiement (hébergeur à choisir — doit supporter Node.js + Express + MySQL, **Vercel exclu** car pensé pour Next.js/serverless)
@@ -370,6 +371,13 @@ Règles d'enchaînement :
   - Dégâts normaux et critiques désormais dans un bandeau `.carte-sort__degats` à 2 blocs côte à côte (séparateur vertical entre les deux), valeur en gros/gras, libellé en petit en dessous ; dégâts critiques teintés `--couleur-feu` pour les distinguer visuellement du reste
   - Le reste des stats (PA, Portée, % critique, Lancers par tour/cible) en grille 2 colonnes sous un séparateur, avec la même convention de pastille d'icône réservée que `CubeCard` (`carte-sort__stat-icone`, vide en attendant les vraies icônes)
 
+### ✅ Tâche 8 terminée — Onglet "Sorts" avec calculateur de dégâts
+- `calculerDegats` (`server/logic/calcul.js`, Tâche 3, jamais branché jusqu'ici) étendu de façon rétrocompatible : accepte en plus, par sort, `degatsCritiqueMin`/`degatsCritiqueMax`/`chanceCritique` (optionnels) ; applique la même formule `ax+b` aux dégâts critiques qu'aux dégâts normaux, et calcule `chanceCritiqueTotal` = % critique du sort + `%_COUP_CRITIQUE` du personnage. Ces clés n'apparaissent dans le résultat que si les données sources existent (aucune régression sur les tests existants). 4 nouveaux tests unitaires (42 au total, tous verts).
+- `obtenirPersonnage` (`personnagesController.js`) : la requête sorts passe à `SELECT es.emplacement, s.*` (au lieu d'énumérer les colonnes une par une, qui oubliait `degats_critique_min/max`/`chance_critique`/`portee_*`/`lancers_par_*` — nécessaires pour que `SortCard` s'affiche correctement sur l'onglet Sorts). Les sorts équipés sont passés à `calculerDegats`, le résultat exposé dans `{ ..., degats }`.
+- `SortCard.jsx` : nouvelle prop optionnelle `calcul` (résultat de `calculerDegats` pour ce sort) — quand fournie, remplace les dégâts/élément/% critique de base par les valeurs calculées ; PA/Portée/Lancers restent toujours ceux du sort (pas liés au calcul). Sans cette prop (page `/sorts` publique), comportement inchangé. Une seule carte pour les deux affichages plutôt qu'une carte dupliquée.
+- Nouveau composant `client/src/components/OngletSorts.jsx` : grille de `SortCard` (avec `calcul`) pour chaque sort équipé ; un sort à 2 éléments (cas géré par `calculerDegats` mais pas encore rencontré dans les vraies données) produirait 2 cartes, une par élément.
+- `PersonnageDetailPage.jsx` : deux onglets "Équipement"/"Sorts" (state `ongletActif`, boutons façon filtres existants) — "Équipement" = grille + `StatsPersonnage` + `PanopliesPersonnage` (contenu inchangé, juste déplacé dans une branche de condition) ; "Sorts" = `OngletSorts`. La modale de détail reste commune aux deux onglets.
+
 ## Points encore en suspens
 
 - **Responsive mobile-first sur les pages déjà construites** (Tâche 5 : accueil, Cubes/Breloques/Sorts, Connexion/Inscription) : aucune media query pour l'instant, pas testé sur petit écran. La convention mobile-first ne s'applique qu'au code écrit *à partir de* la Tâche 7 — une passe dédiée reste à faire sur l'existant.
@@ -377,6 +385,6 @@ Règles d'enchaînement :
 - **Hébergeur** : pas encore choisi (doit supporter Node + Express + MySQL)
 - **Bonus de panoplie Terre/Eau/Feu** : valeurs actuellement fictives (copie de Air) en attendant que le porteur de projet fournisse les vraies — à corriger dans `PANOPLIES` (`calcul.js`)
 - **Paliers 5-9 (Lumière) et 7-9 (Air/Terre/Eau/Feu) des panoplies** : valeurs actuellement fictives en attendant les vraies (voir section "Stats dérivées et bonus de panoplie")
-- **Dommages critique et dommages poussée** : formules connues mais pas encore intégrées à `calculerDegats` (pas de modélisation du jet critique ni du nombre de cases de poussée pour l'instant) — pas urgent
+- **`DO_CRIT` (bonus cube) et dommages poussée** : formules connues mais pas encore intégrées à `calculerDegats` (pas de modélisation du jet critique — se produit ou non — ni du nombre de cases de poussée pour l'instant) — pas urgent. La plage de dégâts critiques du **sort** lui-même (`degats_critique_min/max`) et le `%` critique total sont eux déjà calculés (Tâche 8, onglet Sorts).
 - **Sourcing des images** des équipements : prévu après le MVP
 - **Catégories de filtres pour les breloques** (Dégâts, Mobilité, Soin/Protection, Entrave, Bonus PA/PO, Bonus divers, Breloques boss) : catégories **pas encore décidées définitivement**, et de nouvelles breloques seront ajoutées plus tard. Reporté à plus tard dans le développement plutôt que de classer les 116 breloques actuelles maintenant (risque de tout refaire).

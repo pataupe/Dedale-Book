@@ -38,6 +38,29 @@
   filter: brightness(1.1);
 }
 
+.page-personnage-detail__onglets {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.page-personnage-detail__onglets button {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 2px solid var(--bordure);
+  background: transparent;
+  color: var(--texte);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.page-personnage-detail__onglets button.actif {
+  background: var(--couleur-lumiere);
+  border-color: var(--couleur-lumiere);
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
 .page-personnage-detail__stuff {
   display: flex;
   flex-direction: column;

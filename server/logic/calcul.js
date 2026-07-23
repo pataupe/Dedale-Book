@@ -303,12 +303,18 @@ function resoudreElements(statsPersonnage, sort) {
  *
  * @param {Object} statsPersonnage Résultat de `calculerStatsPersonnage`.
  * @param {Array<{ id: number|string, degatsMin: number|null, degatsMax: number|null,
- *   element: string|string[]|null } | null>} sortsEquipes
+ *   element: string|string[]|null, degatsCritiqueMin?: number|null,
+ *   degatsCritiqueMax?: number|null, chanceCritique?: number|null } | null>} sortsEquipes
+ *   `degatsCritiqueMin/Max` et `chanceCritique` sont optionnels : absents, ils ne
+ *   produisent simplement pas les clés correspondantes dans le résultat.
  * @returns {Array<{ sortId: number|string, element: string, degatsMin: number,
- *   degatsMax: number }>} Un élément du tableau par sort ET par élément de frappe
- *   concerné (2 entrées pour un sort qui tape dans 2 éléments à la fois). Les sorts
- *   sans dégâts (degatsMin/Max absents) ou sans élément de frappe sont omis.
+ *   degatsMax: number, degatsCritiqueMin?: number, degatsCritiqueMax?: number,
+ *   chanceCritiqueTotal?: number }>} Un élément du tableau par sort ET par élément de
+ *   frappe concerné (2 entrées pour un sort qui tape dans 2 éléments à la fois). Les
+ *   sorts sans dégâts (degatsMin/Max absents) ou sans élément de frappe sont omis.
  *   Les dégâts sont arrondis à l'entier le plus proche (jamais affichés en décimal).
+ *   `chanceCritiqueTotal` = % critique de base du sort + stat `%_COUP_CRITIQUE` du
+ *   personnage (jamais arrondi, c'est déjà un entier des deux côtés).
  */
 function calculerDegats(statsPersonnage, sortsEquipes) {
   const resultats = [];
@@ -318,12 +324,27 @@ function calculerDegats(statsPersonnage, sortsEquipes) {
 
     const elements = resoudreElements(statsPersonnage, sort);
     for (const element of elements) {
-      resultats.push({
+      const resultat = {
         sortId: sort.id,
         element,
         degatsMin: Math.round(calculerDegatsPourElement(statsPersonnage, sort.degatsMin, element)),
         degatsMax: Math.round(calculerDegatsPourElement(statsPersonnage, sort.degatsMax, element)),
-      });
+      };
+
+      if (sort.degatsCritiqueMin != null && sort.degatsCritiqueMax != null) {
+        resultat.degatsCritiqueMin = Math.round(
+          calculerDegatsPourElement(statsPersonnage, sort.degatsCritiqueMin, element)
+        );
+        resultat.degatsCritiqueMax = Math.round(
+          calculerDegatsPourElement(statsPersonnage, sort.degatsCritiqueMax, element)
+        );
+      }
+
+      if (sort.chanceCritique != null) {
+        resultat.chanceCritiqueTotal = sort.chanceCritique + (statsPersonnage['%_COUP_CRITIQUE'] || 0);
+      }
+
+      resultats.push(resultat);
     }
   }
 

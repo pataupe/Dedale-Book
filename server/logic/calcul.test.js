@@ -287,4 +287,34 @@ describe('calculerDegats', () => {
     const resultats = calculerDegats(stats, [null, { id: 1, degatsMin: 20, degatsMax: 20, element: 'Feu' }]);
     expect(resultats).toHaveLength(1);
   });
+
+  it('calcule aussi les dégâts critiques quand degatsCritiqueMin/Max sont fournis', () => {
+    const stats = calculerStatsPersonnage([cube({ INTELLIGENCE: 100 })]);
+    const resultats = calculerDegats(stats, [
+      { id: 1, degatsMin: 20, degatsMax: 20, degatsCritiqueMin: 25, degatsCritiqueMax: 25, element: 'Feu' },
+    ]);
+    expect(resultats[0].degatsMin).toBe(40); // 100 stat = double les dégâts
+    expect(resultats[0].degatsCritiqueMin).toBe(50);
+    expect(resultats[0].degatsCritiqueMax).toBe(50);
+  });
+
+  it('pas de degatsCritiqueMin/Max dans le résultat si absents en entrée (rétrocompatible)', () => {
+    const stats = calculerStatsPersonnage([]);
+    const resultats = calculerDegats(stats, [{ id: 1, degatsMin: 19, degatsMax: 23, element: 'Feu' }]);
+    expect(resultats).toEqual([{ sortId: 1, element: 'Feu', degatsMin: 19, degatsMax: 23 }]);
+  });
+
+  it('% critique total = % critique de base du sort + %_COUP_CRITIQUE du personnage', () => {
+    const stats = calculerStatsPersonnage([cube({ '%_COUP_CRITIQUE': 20 })]);
+    const resultats = calculerDegats(stats, [
+      { id: 1, degatsMin: 20, degatsMax: 20, chanceCritique: 15, element: 'Feu' },
+    ]);
+    expect(resultats[0].chanceCritiqueTotal).toBe(35);
+  });
+
+  it('chanceCritiqueTotal absent si chanceCritique non fourni en entrée', () => {
+    const stats = calculerStatsPersonnage([]);
+    const resultats = calculerDegats(stats, [{ id: 1, degatsMin: 20, degatsMax: 20, element: 'Feu' }]);
+    expect(resultats[0].chanceCritiqueTotal).toBeUndefined();
+  });
 });
