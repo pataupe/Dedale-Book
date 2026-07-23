@@ -1,41 +1,87 @@
 .entete {
-  padding: 16px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--bg);
   border-bottom: 1px solid var(--bordure);
+}
+
+.entete__barre {
+  padding: 12px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
   gap: 12px;
 }
 
 .entete__logo {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  font-size: 22px;
+  gap: 10px;
+  font-size: 18px;
   font-weight: 700;
 }
 
 .entete__logo img {
-  height: 40px;
-  width: 40px;
+  height: 34px;
+  width: 34px;
   border-radius: 50%;
+}
+
+/* Hamburger : caché par défaut (desktop), affiché seulement en dessous du
+   point de rupture mobile. 3 barres qui se transforment en croix à l'ouverture. */
+.entete__hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  background: var(--bg-carte);
+  padding: 0;
+}
+
+.entete__hamburger span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--texte);
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.entete__hamburger--ouvert span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.entete__hamburger--ouvert span:nth-child(2) {
+  opacity: 0;
+}
+
+.entete__hamburger--ouvert span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 .entete__nav {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 20px;
   flex-wrap: wrap;
+  padding: 0 16px 12px;
 }
 
 .entete__liens {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
-/* Boutons de navigation (Cubes/Breloques/Sorts) : mis en valeur, bien
-   distincts visuellement du bouton Connexion. */
+/* Boutons de navigation (Cubes/Breloques/Sorts) : neutres, bien distincts du
+   bouton "Mes stuffs" ci-dessous (accès au compte, mis en valeur en accent). */
 .entete__lien {
   padding: 8px 16px;
   border-radius: 20px;
@@ -47,6 +93,20 @@
 
 .entete__lien:hover {
   background: var(--bg-carte-survol);
+}
+
+/* "Mes stuffs" : seul lien qui mène au compte du joueur (pas juste une liste
+   consultable librement) — accent doré pour bien le séparer visuellement des
+   3 listes Cubes/Breloques/Sorts, même traitement que le bouton Connexion. */
+.entete__lien--compte {
+  background: transparent;
+  border: 2px solid var(--couleur-lumiere);
+  color: var(--couleur-lumiere);
+}
+
+.entete__lien--compte:hover {
+  background: var(--couleur-lumiere);
+  color: #1a1a1a;
 }
 
 .entete__connexion {
@@ -87,4 +147,55 @@
 .entete__deconnexion:hover {
   background: var(--couleur-feu);
   color: #fff;
+}
+
+/* En dessous du point de rupture : la nav devient un panneau déroulant
+   (masqué par défaut, ouvert via le hamburger), le hamburger apparaît. */
+@media (max-width: 719px) {
+  .entete__hamburger {
+    display: flex;
+  }
+
+  .entete__nav {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 4px 16px 16px;
+  }
+
+  .entete__nav--ouvert {
+    display: flex;
+  }
+
+  .entete__liens {
+    flex-direction: column;
+  }
+
+  .entete__lien {
+    text-align: center;
+  }
+
+  .entete__compte {
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 720px) {
+  .entete__barre {
+    padding: 16px 24px 0;
+  }
+
+  .entete__logo {
+    font-size: 22px;
+  }
+
+  .entete__logo img {
+    height: 40px;
+    width: 40px;
+  }
+
+  .entete__nav {
+    padding: 16px 24px;
+  }
 }

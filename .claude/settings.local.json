@@ -2,7 +2,26 @@
   "permissions": {
     "allow": [
       "Bash(rm -f \"C:\\\\Users\\\\natha\\\\.claude\\\\projects\\\\C--Users-natha-dev-Dedalofus\\\\memory\\\\project_data_discrepancies.md\")",
-      "Bash(mysql --version)"
+      "Bash(mysql --version)",
+      "Bash(tasklist)",
+      "Bash(taskkill //F //PID 13628)",
+      "Bash(netstat -ano)",
+      "Read(//tmp/**)",
+      "Bash(node index.js)",
+      "PowerShell(Get-CimInstance Win32_Process -Filter \"Name='cloudflared.exe'\")",
+      "PowerShell(Get-CimInstance Win32_Process -Filter \"ProcessId=32936\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5173 --max-time 5)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5174 --max-time 5)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" https://destiny-manager-antiques-surge.trycloudflare.com --max-time 15)",
+      "Bash(taskkill //F //PID 1824)",
+      "Bash(curl -s http://localhost:3001/api/personnages/9 -H 'Authorization: Bearer __CMDSUB_OUTPUT__')",
+      "Bash(node -e \"let d='';process.stdin.on\\('data',c=>d+=c\\);process.stdin.on\\('end',\\(\\)=>{const p=JSON.parse\\(d\\); console.log\\(JSON.stringify\\(p.cubes.filter\\(c=>c.cube\\).map\\(c=>\\({emplacement:c.emplacement, cube:c.cube.element+' '+c.cube.numero}\\)\\)\\)\\)}\\)\")",
+      "Bash(npx vitest *)",
+      "Bash(taskkill //F //PID 20572)",
+      "Bash(curl -s http://localhost:3001/api/personnages/10 -H 'Authorization: Bearer __CMDSUB_OUTPUT__')",
+      "Bash(node -e \"let d='';process.stdin.on\\('data',c=>d+=c\\);process.stdin.on\\('end',\\(\\)=>{const p=JSON.parse\\(d\\); console.log\\(JSON.stringify\\(p.panoplies, null, 2\\)\\)}\\)\")",
+      "Bash(node \"C:\\\\Users\\\\natha\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-natha-dev-Dedalofus\\\\87585f8f-1ca1-4cef-821b-60a180bfdebb\\\\scratchpad\\\\migration_parcho.js\")",
+      "WebFetch(domain:www.ovhcloud.com)"
     ]
   }
 }

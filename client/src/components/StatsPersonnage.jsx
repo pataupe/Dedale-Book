@@ -6,57 +6,59 @@ import './StatsPersonnage.css';
 // des stats brutes des cubes (ex: FORCE), soit des stats dérivées calculées
 // par `calculerStatsPersonnage` (server/logic/calcul.js) — respecter le mélange
 // `_TOTAL`/`_TOTALE` exact, ce sont les noms réellement produits par ce module.
+// `icone`/`couleur` : simples emoji + couleur d'élément existante (pas de vraies
+// icônes en V1), juste pour retrouver visuellement le repère DofusBook.
 const BLOCS = [
   {
     titre: 'Principal',
     lignes: [
-      { cle: 'VITALITE_TOTALE', libelle: 'PdV' },
-      { cle: 'PA_TOTAL', libelle: 'PA' },
-      { cle: 'PM_TOTAL', libelle: 'PM' },
-      { cle: 'PO', libelle: 'PO' },
-      { cle: 'INVOCATION_TOTALE', libelle: 'Invocation' },
-      { cle: 'INITIATIVE_TOTALE', libelle: 'Initiative' },
-      { cle: '%_COUP_CRITIQUE', libelle: '% Critique' },
-      { cle: 'SOIN', libelle: 'Soin' },
+      { cle: 'VITALITE_TOTALE', libelle: 'PdV', icone: '❤️', couleur: 'var(--couleur-feu)' },
+      { cle: 'PA_TOTAL', libelle: 'PA', icone: '⭐', couleur: 'var(--couleur-lumiere)' },
+      { cle: 'PM_TOTAL', libelle: 'PM', icone: '🔷', couleur: 'var(--couleur-air)' },
+      { cle: 'PO', libelle: 'PO', icone: '👁️', couleur: 'var(--couleur-eau)' },
+      { cle: 'INVOCATION_TOTALE', libelle: 'Invoc.', icone: '👹', couleur: 'var(--couleur-chaos)' },
+      { cle: 'INITIATIVE_TOTALE', libelle: 'Init.', icone: '🪽', couleur: 'var(--couleur-chaos)' },
+      { cle: '%_COUP_CRITIQUE', libelle: 'Crit. %', icone: '❗', couleur: 'var(--couleur-feu)' },
+      { cle: 'SOIN', libelle: 'Soin', icone: '✚', couleur: 'var(--couleur-feu)' },
     ],
   },
   {
     titre: 'Mobilité',
     lignes: [
-      { cle: 'FUITE_TOTALE', libelle: 'Fuite' },
-      { cle: 'TACLE_TOTAL', libelle: 'Tacle' },
-      { cle: 'ESQUIVE_PA_TOTALE', libelle: 'Esquive PA' },
-      { cle: 'ESQUIVE_PM_TOTALE', libelle: 'Esquive PM' },
-      { cle: 'RETRAIT_PA_TOTAL', libelle: 'Retrait PA' },
-      { cle: 'RETRAIT_PM_TOTAL', libelle: 'Retrait PM' },
+      { cle: 'FUITE_TOTALE', libelle: 'Fuite', icone: '➡️', couleur: 'var(--couleur-terre)' },
+      { cle: 'TACLE_TOTAL', libelle: 'Tacle', icone: '🐾', couleur: 'var(--couleur-lumiere)' },
+      { cle: 'ESQUIVE_PA_TOTALE', libelle: 'Esq. PA', icone: '🛡️', couleur: 'var(--couleur-eau)' },
+      { cle: 'ESQUIVE_PM_TOTALE', libelle: 'Esq. PM', icone: '🛡️', couleur: 'var(--couleur-air)' },
+      { cle: 'RETRAIT_PA_TOTAL', libelle: 'Ret. PA', icone: '⬇️', couleur: 'var(--couleur-eau)' },
+      { cle: 'RETRAIT_PM_TOTAL', libelle: 'Ret. PM', icone: '⬇️', couleur: 'var(--couleur-air)' },
     ],
   },
   {
     titre: 'Dommages',
     lignes: [
-      { cle: 'DOMMAGES_FEU_TOTAL', libelle: 'Dommages Feu' },
-      { cle: 'DOMMAGES_TERRE_TOTAL', libelle: 'Dommages Terre' },
-      { cle: 'DOMMAGES_EAU_TOTAL', libelle: 'Dommages Eau' },
-      { cle: 'DOMMAGES_AIR_TOTAL', libelle: 'Dommages Air' },
-      { cle: 'DO_CRIT', libelle: 'Dommages Critiques' },
-      { cle: 'DO_POU', libelle: 'Dommages Poussée' },
+      { cle: 'DOMMAGES_FEU_TOTAL', libelle: 'Do Feu', icone: '🔥', couleur: 'var(--couleur-feu)' },
+      { cle: 'DOMMAGES_TERRE_TOTAL', libelle: 'Do Terre', icone: '🌾', couleur: 'var(--couleur-terre)' },
+      { cle: 'DOMMAGES_EAU_TOTAL', libelle: 'Do Eau', icone: '💧', couleur: 'var(--couleur-eau)' },
+      { cle: 'DOMMAGES_AIR_TOTAL', libelle: 'Do Air', icone: '🍃', couleur: 'var(--couleur-air)' },
+      { cle: 'DO_CRIT', libelle: 'Do Crit.', icone: '🎯', couleur: 'var(--couleur-feu)' },
+      { cle: 'DO_POU', libelle: 'Do Pou.', icone: '➡️', couleur: 'var(--texte-attenue)' },
     ],
   },
   {
     titre: 'Résistances',
     lignes: [
-      { cle: 'RES_NEUTRE', libelle: 'Résistance Neutre' },
-      { cle: '%_RES_NEUTRE', libelle: '% Résistance Neutre' },
-      { cle: 'RES_TERRE', libelle: 'Résistance Terre' },
-      { cle: '%_RES_TERRE', libelle: '% Résistance Terre' },
-      { cle: 'RES_FEU', libelle: 'Résistance Feu' },
-      { cle: '%_RES_FEU', libelle: '% Résistance Feu' },
-      { cle: 'RES_EAU', libelle: 'Résistance Eau' },
-      { cle: '%_RES_EAU', libelle: '% Résistance Eau' },
-      { cle: 'RES_AIR', libelle: 'Résistance Air' },
-      { cle: '%_RES_AIR', libelle: '% Résistance Air' },
-      { cle: 'RES_CRIT', libelle: 'Résistance Critiques' },
-      { cle: 'RES_POU', libelle: 'Résistance Poussée' },
+      { cle: 'RES_NEUTRE', libelle: 'Ré Neutre', icone: '☯️', couleur: 'var(--texte-attenue)' },
+      { cle: '%_RES_NEUTRE', libelle: '% Ré Neutre', icone: '☯️', couleur: 'var(--texte-attenue)' },
+      { cle: 'RES_TERRE', libelle: 'Ré Terre', icone: '🌾', couleur: 'var(--couleur-terre)' },
+      { cle: '%_RES_TERRE', libelle: '% Ré Terre', icone: '🌾', couleur: 'var(--couleur-terre)' },
+      { cle: 'RES_FEU', libelle: 'Ré Feu', icone: '🔥', couleur: 'var(--couleur-feu)' },
+      { cle: '%_RES_FEU', libelle: '% Ré Feu', icone: '🔥', couleur: 'var(--couleur-feu)' },
+      { cle: 'RES_EAU', libelle: 'Ré Eau', icone: '💧', couleur: 'var(--couleur-eau)' },
+      { cle: '%_RES_EAU', libelle: '% Ré Eau', icone: '💧', couleur: 'var(--couleur-eau)' },
+      { cle: 'RES_AIR', libelle: 'Ré Air', icone: '🍃', couleur: 'var(--couleur-air)' },
+      { cle: '%_RES_AIR', libelle: '% Ré Air', icone: '🍃', couleur: 'var(--couleur-air)' },
+      { cle: 'RES_CRIT', libelle: 'Ré Crit.', icone: '🛡️', couleur: 'var(--couleur-feu)' },
+      { cle: 'RES_POU', libelle: 'Ré Pou.', icone: '🛡️', couleur: 'var(--texte-attenue)' },
     ],
   },
 ];
@@ -64,15 +66,33 @@ const BLOCS = [
 // Les 6 caractéristiques qui ont une case "Parcho" éditable (dans cet ordre
 // précis, façon DofusBook). Puissance n'a pas de Parcho, elle reste à part.
 const CARACTERISTIQUES_EDITABLES = [
-  { cle: 'VITALITE', libelle: 'Vitalité' },
-  { cle: 'SAGESSE', libelle: 'Sagesse' },
-  { cle: 'FORCE', libelle: 'Force' },
-  { cle: 'INTELLIGENCE', libelle: 'Intelligence' },
-  { cle: 'CHANCE', libelle: 'Chance' },
-  { cle: 'AGILITE', libelle: 'Agilité' },
+  { cle: 'VITALITE', libelle: 'Vitalité', icone: '❤️', couleur: 'var(--couleur-feu)' },
+  { cle: 'SAGESSE', libelle: 'Sagesse', icone: '🌙', couleur: 'var(--couleur-chaos)' },
+  { cle: 'FORCE', libelle: 'Force', icone: '🌾', couleur: 'var(--couleur-terre)' },
+  { cle: 'INTELLIGENCE', libelle: 'Intel.', icone: '🔥', couleur: 'var(--couleur-feu)' },
+  { cle: 'CHANCE', libelle: 'Chance', icone: '💧', couleur: 'var(--couleur-eau)' },
+  { cle: 'AGILITE', libelle: 'Agilité', icone: '🍃', couleur: 'var(--couleur-air)' },
 ];
 
 const BOUTONS_REMPLISSAGE = [0, 100, 150];
+
+function Icone({ emoji, couleur }) {
+  return (
+    <span className="stats-personnage__icone" style={{ background: couleur }}>
+      {emoji}
+    </span>
+  );
+}
+
+function LigneStat({ cle, libelle, icone, couleur, valeur }) {
+  return (
+    <li className="stats-personnage__ligne">
+      <span className="stats-personnage__valeur">{valeur}</span>
+      <Icone emoji={icone} couleur={couleur} />
+      <span className="stats-personnage__libelle">{libelle}</span>
+    </li>
+  );
+}
 
 function StatsPersonnage({ stats, parcho, token, personnageId, onParchoSauvegarde }) {
   const [parchoLocal, setParchoLocal] = useState(parcho);
@@ -112,10 +132,8 @@ function StatsPersonnage({ stats, parcho, token, personnageId, onParchoSauvegard
         <div key={bloc.titre} className="stats-personnage__bloc">
           <h2 className="stats-personnage__titre">{bloc.titre}</h2>
           <ul className="stats-personnage__liste">
-            {bloc.lignes.map(({ cle, libelle }) => (
-              <li key={cle}>
-                {stats[cle] || 0} {libelle}
-              </li>
+            {bloc.lignes.map((ligne) => (
+              <LigneStat key={ligne.cle} {...ligne} valeur={stats[ligne.cle] || 0} />
             ))}
           </ul>
         </div>
@@ -127,10 +145,12 @@ function StatsPersonnage({ stats, parcho, token, personnageId, onParchoSauvegard
           <span>Total</span>
           <span>Parcho</span>
         </div>
-        {CARACTERISTIQUES_EDITABLES.map(({ cle, libelle }) => (
+        {CARACTERISTIQUES_EDITABLES.map(({ cle, libelle, icone, couleur }) => (
           <div key={cle} className="stats-personnage__carac-ligne">
             <span className="stats-personnage__carac-total">
-              {stats[cle] || 0} {libelle}
+              <span className="stats-personnage__valeur">{stats[cle] || 0}</span>
+              <Icone emoji={icone} couleur={couleur} />
+              <span className="stats-personnage__libelle">{libelle}</span>
             </span>
             <input
               type="number"
@@ -156,7 +176,11 @@ function StatsPersonnage({ stats, parcho, token, personnageId, onParchoSauvegard
             </button>
           ))}
         </div>
-        <p className="stats-personnage__carac-puissance">{stats.PUISSANCE || 0} Puissance</p>
+        <p className="stats-personnage__carac-puissance">
+          <span className="stats-personnage__valeur">{stats.PUISSANCE || 0}</span>
+          <Icone emoji="⚡" couleur="var(--couleur-lumiere)" />
+          <span className="stats-personnage__libelle">Puissance</span>
+        </p>
         {erreurParcho && <p className="stats-personnage__erreur">{erreurParcho}</p>}
       </div>
 
@@ -164,10 +188,8 @@ function StatsPersonnage({ stats, parcho, token, personnageId, onParchoSauvegard
         <div key={bloc.titre} className="stats-personnage__bloc">
           <h2 className="stats-personnage__titre">{bloc.titre}</h2>
           <ul className="stats-personnage__liste">
-            {bloc.lignes.map(({ cle, libelle }) => (
-              <li key={cle}>
-                {stats[cle] || 0} {libelle}
-              </li>
+            {bloc.lignes.map((ligne) => (
+              <LigneStat key={ligne.cle} {...ligne} valeur={stats[ligne.cle] || 0} />
             ))}
           </ul>
         </div>
